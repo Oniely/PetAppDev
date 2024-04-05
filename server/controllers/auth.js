@@ -1,6 +1,5 @@
-const User = require("./models/user.js");
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const { StatusCodes } = require('http-status-codes');
 
 function getUserDataFromToken(token) {
@@ -19,34 +18,36 @@ const signIn = async (req, res) => {
   try {
 		const user = await User.findOne({ email });
 
-		if (user) {
-			const comparePassword = await bcrypt.compare(
-				password,
-				user.password
-			);
-
-			if (comparePassword) {
-				jwt.sign(
-					{ id: user._id, email: user.email, name: user.name },
-					process.env.JWT_SECRET,
-					{},
-					(err, token) => {
-						if (err) throw err;
-						res.cookie("token", token).json(user);
-					}
-				);
-			} else {
-				res.status(StatusCodes.UNAUTHORIZED).json({
-					msg: "Invalid Credentials",
-				});
-			}
-		} else {
-			res.status(StatusCodes.NOT_FOUND).json({
-				msg: "Email does not exist",
-			});
+		if (!user || !user.comparePassword(password)) {
+			res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid user or password" });
 		}
+
+		jwt.sign(
+			{ id: user._id, email: user.email, name: user.name },
+			process.env.JWT_SECRET,
+			{ expiresIn: process.env.JWT_EXPIRATION_TIME },
+			(err, token) => {
+				if (err) throw err;
+				res.cookie("token", token).json(user);
+			}
+		);
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json(error);
 	}
 }
 
+const signUp = async (req, res) => {
+	const { name, email, password } = req.body;
+
+	try {
+		const user = await User.create({ name, email, password });
+		res.status(StatusCodes.CREATED).json(user);
+	} catch (error) {
+		res.status(StatusCodes.BAD_REQUEST).json(error);
+	}
+}
+
+module.exports = {
+	signIn,
+	signUp
+}

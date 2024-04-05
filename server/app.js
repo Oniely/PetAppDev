@@ -13,13 +13,13 @@ const cookieParser = require("cookie-parser");
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
-// app.use(
-// 	cors({
-// 		credentials: true,
-// 		// url of frontend
-// 		origin: "http://localhost:5173",
-// 	})
-// );
+app.use(
+	cors({
+		credentials: true,
+		// url of frontend
+		origin: "http://localhost:5173",
+	})
+);
 
 // routes
 app.use('/auth', require('./routes/auth'));

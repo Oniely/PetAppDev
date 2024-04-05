@@ -1,34 +1,34 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-  fullname: {
+  name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    lowercase: true,
+    trim: true
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minLength: 6
   },
-  avatar: Buffer
-});
+  image_url: String
+}, { timestamps: true });
 
-UserSchema.statics.isThisEmailInUse = async function(email) {
-  if (!email) throw new Error('Invalid Email');
+UserSchema.pre('save', async function() {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+})
 
-  try {
-    const user = await this.findOne({ email });
-    if (user) return true;
-
-    return false;
-  } catch (error) {
-    console.log(`Error in isThisEmailInUse: ${error.message}`);
-    return false;
-  }
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
 }
 
 module.exports = mongoose.model('User', UserSchema);
