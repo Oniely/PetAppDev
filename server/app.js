@@ -1,38 +1,35 @@
+require("dotenv").config();
+
 const express = require("express");
-const User = require("./models/user.js");
 const app = express();
 
-require("dotenv").config();
-require("./db/db.js");
+// db connection
+const connectDB = require("./db/connect");
 
+// packages
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+// middlewares
 app.use(express.json());
-// DIFFERENTIATE FILES for routers and controllers
+app.use(cookieParser());
+// app.use(
+// 	cors({
+// 		credentials: true,
+// 		// url of frontend
+// 		origin: "http://localhost:5173",
+// 	})
+// );
 
-app.get("/", (req, res) => {
-	res.send("Success");
-});
+// routes
+app.use('/auth', require('./routes/auth'));
 
-const email = "sd@gmail.com";
-
-app.post("/sign-up", async (req, res) => {
-	const isNewUser = User.isThisEmailInUse(email);
-
-	if (!isNewUser) {
-		return res.json({
-			success: false,
-			message: "Email is already in use.",
-		});
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, async () => {
+	try {
+		await connectDB(process.env.MONGO_URI);
+		console.log(`Server is listening on port ${PORT}...`);
+	} catch (error) {
+		console.log(error);
 	}
-
-	const user = await User({
-		fullname: "John Doe",
-		email: email,
-		password: "1234",
-	});
-	await user.save();
-	res.json(user);
-});
-
-app.listen(4000, () => {
-	console.log(`Listening on port 4000...`);
 });
