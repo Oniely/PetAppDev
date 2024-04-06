@@ -4,7 +4,7 @@ const Login = () => {
 	return (
 		<View className="pt-14">
 			<View className="gap-2 mb-12">
-				<Text className="text-5xl font-medium tracking-wider text-gray-800">
+				<Text className="text-[50px] font-medium tracking-wider text-gray-800">
 					Hello,
 				</Text>
 				<Text className="text-5xl font-medium tracking-wider text-gray-800">

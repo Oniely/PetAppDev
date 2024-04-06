@@ -12,6 +12,14 @@ function getUserDataFromToken(token) {
 	});
 }
 
+function createToken(user) {
+	return jwt.sign(
+		{ id: user._id, email: user.email, name: user.name },
+		process.env.JWT_SECRET,
+		{ expiresIn: process.env.JWT_EXPIRATION_TIME }
+	);
+}
+
 function authErrorHandler(err) {
 	let errors = { name: "", email: "", password: "" };
 
@@ -44,15 +52,8 @@ const signIn = async (req, res) => {
 			});
 		}
 
-		jwt.sign(
-			{ id: user._id, email: user.email, name: user.name },
-			process.env.JWT_SECRET,
-			{ expiresIn: process.env.JWT_EXPIRATION_TIME },
-			(err, token) => {
-				if (err) throw err;
-				res.cookie("token", token).json(user);
-			}
-		);
+		const token = createToken(user);
+		res.cookie("token", token, { httpOnly: true, maxAge: process.env.JWT_EXPIRATION_TIME * 1000 }).status(StatusCodes.OK).json(user._id);
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json(error.message);
 	}
@@ -65,15 +66,8 @@ const signUp = async (req, res) => {
 		const user = await User.create({ name, email, password });
 
 		if (user) {
-			jwt.sign(
-				{ id: user._id, email: user.email, name: user.name },
-				process.env.JWT_SECRET,
-				{ expiresIn: process.env.JWT_EXPIRATION_TIME },
-				(err, token) => {
-					if (err) throw err;
-					res.cookie("token", token).json(user);
-				}
-			);
+			const token = createToken(user);
+			res.cookie("token", token, { httpOnly: true, maxAge: process.env.JWT_EXPIRATION_TIME * 1000 }).status(StatusCodes.CREATED).json(user._id);
 		}
 	} catch (error) {
 		const errors = authErrorHandler(error);
