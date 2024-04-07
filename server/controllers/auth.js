@@ -53,7 +53,7 @@ const signIn = async (req, res) => {
 		}
 
 		const token = createToken(user);
-		res.cookie("token", token, { httpOnly: true, maxAge: process.env.JWT_EXPIRATION_TIME * 1000 }).status(StatusCodes.OK).json(user._id);
+		res.cookie("token", token, { httpOnly: true }).status(StatusCodes.OK).json(user._id);
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json(error.message);
 	}
@@ -67,7 +67,7 @@ const signUp = async (req, res) => {
 
 		if (user) {
 			const token = createToken(user);
-			res.cookie("token", token, { httpOnly: true, maxAge: process.env.JWT_EXPIRATION_TIME * 1000 }).status(StatusCodes.CREATED).json(user._id);
+			res.cookie("token", token, { httpOnly: true }).status(StatusCodes.CREATED).json(user._id);
 		}
 	} catch (error) {
 		const errors = authErrorHandler(error);
