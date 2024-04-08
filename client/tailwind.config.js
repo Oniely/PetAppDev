@@ -1,14 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./**.{js,ts,jsx,tsx}",
-    "./App/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        // "main-orange": "#F59245",
-        "main-orange": "#FF8326",
+        "main-orange": "#F59245",
+        // "main-orange": "#FF8326",
         "light-orange": "#FCDBC1",
         "nav-gray": "#7E808F",
         "dark-gray": "#1E1E1E",
