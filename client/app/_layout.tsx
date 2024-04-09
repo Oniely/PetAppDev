@@ -87,9 +87,9 @@ function RootLayoutNav() {
     useEffect(() => {
         if (!isLoaded) return;
 
-        // const inTabsGroup = segments[0] === '(auth)';
+        const inTabsGroup = segments[0] === '(tabs)';
 
-        if (isSignedIn) {
+        if (isSignedIn && !inTabsGroup) {
             router.replace('/(tabs)/home/');
         } else if (!isSignedIn) {
             router.replace('/(auth)/login');
