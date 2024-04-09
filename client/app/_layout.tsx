@@ -1,52 +1,105 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import * as SplashScreen from "expo-splash-screen";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
+import { useFonts } from "expo-font";
+
+import { ClerkProvider, useAuth, useUser } from "@clerk/clerk-expo";
+import * as SecureStore from "expo-secure-store";
+
+import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins";
+import { Montserrat_400Regular, Montserrat_500Medium, Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+import { OpenSans_400Regular, OpenSans_500Medium, OpenSans_600SemiBold, OpenSans_700Bold } from "@expo-google-fonts/open-sans";
 
 export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+    // Catch any errors thrown by the Layout component.
+    ErrorBoundary,
+} from "expo-router";
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+const tokenCache = {
+    async getToken(key: string) {
+        try {
+            return SecureStore.getItemAsync(key);
+        } catch (err) {
+            return null;
+        }
+    },
+    async saveToken(key: string, value: string) {
+        try {
+            return SecureStore.setItemAsync(key, value);
+        } catch (err) {
+            return;
+        }
+    },
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
+    const [loaded, error] = useFonts({
+        Poppins_400Regular,
+        Poppins_500Medium,
+        Poppins_600SemiBold,
+        Poppins_700Bold,
+        
+        Montserrat_400Regular,
+        Montserrat_500Medium,
+        Montserrat_600SemiBold,
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+		OpenSans_400Regular,
+        OpenSans_500Medium,
+        OpenSans_600SemiBold,
+		OpenSans_700Bold,
+    });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+    useEffect(() => {
+        if (error) throw error;
+    }, [error]);
+
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
+
+    if (!loaded) {
+        return null;
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
+    return (
+        <ClerkProvider
+            tokenCache={tokenCache}
+            publishableKey={CLERK_PUBLISHABLE_KEY!}
+        >
+            <RootLayoutNav />
+        </ClerkProvider>
+    );
 }
 
 function RootLayoutNav() {
+    const { isLoaded, isSignedIn } = useAuth();
+    const segments = useSegments();
+    const router = useRouter();
 
-  return (
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-      </Stack>
-  );
+    useEffect(() => {
+        if (!isLoaded) return;
+
+        // const inTabsGroup = segments[0] === '(auth)';
+
+        if (isSignedIn) {
+            router.replace('/(tabs)/home/');
+        } else if (!isSignedIn) {
+            router.replace('/(auth)/login');
+        }
+    }, [isSignedIn])
+
+    return (
+        <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen name="(tabs)" />
+        </Stack>
+    );
 }

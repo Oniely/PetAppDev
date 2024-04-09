@@ -4,10 +4,21 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["./components/*"],
-      "@/constants/*": ["./constants/*"],
-      "@/assets/*": ["./assets/*"],
+      "@/*": [
+        "./*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/constants/*": [
+        "./constants/*"
+      ],
+      "@/assets/*": [
+        "./assets/*"
+      ],
+      "@/hooks/*": [
+        "./hooks/*"
+      ]
     }
   },
   "include": [

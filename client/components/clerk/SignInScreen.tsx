@@ -1,19 +1,44 @@
+import React from "react";
+import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useSignIn } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import { useFonts } from "expo-font";
-import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
-import { OpenSans_400Regular, OpenSans_700Bold } from "@expo-google-fonts/open-sans";
+import SignInWithOAuth from "./SignInWithOAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const Login = () => {
-	const [fontsLoaded] = useFonts({
-		Montserrat_600SemiBold,
-		OpenSans_400Regular,
-		OpenSans_700Bold
-	});
+export default function SignInScreen() {
+	const { signIn, setActive, isLoaded } = useSignIn();
 
+	const [emailAddress, setEmailAddress] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [loading, setLoading] = React.useState(false);
+
+	const onSignInPress = async () => {
+		if (!isLoaded) {
+			return;
+		}
+		setLoading(true);
+
+		try {
+			const completeSignIn = await signIn.create({
+				identifier: emailAddress,
+				password,
+			});
+			// This is an important step,
+			// This indicates the user is signed in
+			await setActive({ session: completeSignIn.createdSessionId });
+			router.replace('/(tabs)/home');
+		} catch (err: any) {
+			alert(err.errors[0].message);
+		} finally {
+			setLoading(false);
+			setEmailAddress("");
+			setPassword("");
+		}
+	};
 	return (
 		<SafeAreaView className="pt-6 px-4 bg-off-white flex-1 h-full">
+			<Spinner visible={loading} />
 			<View>
 				<Image
 					source={require("@/assets/images/logo.png")}
@@ -27,7 +52,7 @@ const Login = () => {
 							style={{ fontFamily: "Montserrat_600SemiBold" }}
 							className="text-[50px] font-semibold text-gray-800 leading-[55px]"
 						>
-							Hello! 
+							Hello!
 						</Text>
 						<Text
 							style={{ fontFamily: "Montserrat_600SemiBold" }}
@@ -56,7 +81,11 @@ const Login = () => {
 							style={{ fontFamily: "OpenSans_400Regular" }}
 							placeholder="example@gmail.com"
 							className="px-3 py-4 text-base border rounded-xl bg-off-white"
-							id="email"
+							autoCapitalize="none"
+							value={emailAddress}
+							onChangeText={(emailAddress) =>
+								setEmailAddress(emailAddress)
+							}
 						/>
 					</View>
 					<View>
@@ -70,7 +99,9 @@ const Login = () => {
 							style={{ fontFamily: "OpenSans_400Regular" }}
 							placeholder="example@gmail.com"
 							className="px-3 py-4 text-base border rounded-xl bg-off-white"
-							id="password"
+							secureTextEntry={true}
+							value={password}
+							onChangeText={(password) => setPassword(password)}
 						/>
 						<Text
 							style={{ fontFamily: "OpenSans_400Regular" }}
@@ -81,8 +112,14 @@ const Login = () => {
 					</View>
 				</View>
 				<View className="items-center">
-					<TouchableOpacity onPress={() => router.push('/(tabs)')} className="items-center w-full py-4 rounded-xl bg-main-orange">
-						<Text style={{ fontFamily: "OpenSans_700Bold" }} className="text-lg text-neutral-100">
+					<TouchableOpacity
+						onPress={onSignInPress}
+						className="items-center w-full py-4 rounded-xl bg-main-orange"
+					>
+						<Text
+							style={{ fontFamily: "OpenSans_700Bold" }}
+							className="text-lg text-neutral-100"
+						>
 							Sign In
 						</Text>
 					</TouchableOpacity>
@@ -98,14 +135,7 @@ const Login = () => {
 				</View>
 			</View>
 			<Text className="text-gray-400 text-sm text-center my-6">or</Text>
-			<View className="flex-1">
-				<TouchableOpacity className="border h-14 rounded-xl items-center justify-center flex-row space-x-1">
-					<Image source={require('@/assets/images/google-icon.png')} className="w-7 h-7" />
-					<Text style={{ fontFamily: "OpenSans_400Regular" }} className="text-center text-base"> Sign in with Google</Text>
-				</TouchableOpacity>
-			</View>
+			<SignInWithOAuth />
 		</SafeAreaView>
 	);
-};
-
-export default Login;
+}
