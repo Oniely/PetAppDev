@@ -1,16 +1,19 @@
 import * as React from "react";
 import {
 	Image,
-	SafeAreaView,
+	KeyboardAvoidingView,
+	Platform,
 	Text,
 	TextInput,
 	TouchableOpacity,
 	View,
 } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
 import Spinner from "react-native-loading-spinner-overlay";
+import { OtpInput } from "react-native-otp-entry";
+import Colors from "@/constants/Colors";
 
 export default function SignUpScreen() {
 	const { isLoaded, signUp, setActive } = useSignUp();
@@ -22,6 +25,21 @@ export default function SignUpScreen() {
 	const [pendingVerification, setPendingVerification] = React.useState(false);
 	const [code, setCode] = React.useState("");
 	const [loading, setLoading] = React.useState(false);
+	const [timer, setTimer] = React.useState(60);
+
+	React.useEffect(() => {
+		if (pendingVerification === true) {
+			if (timer > 0) {
+				const timerCountInterval = setInterval(() => {
+					setTimer(timer - 1);
+				}, 1000);
+
+				return () => clearInterval(timerCountInterval);
+			}
+		} else {
+			setTimer(60);
+		}
+	}, [timer, pendingVerification]);
 
 	// start the sign up process.
 	const onSignUpPress = async () => {
@@ -49,10 +67,6 @@ export default function SignUpScreen() {
 			alert(err.errors[0].message);
 		} finally {
 			setLoading(false);
-			setFirstName("");
-			setLastName("");
-			setEmailAddress("");
-			setPassword("");
 		}
 	};
 
@@ -62,6 +76,12 @@ export default function SignUpScreen() {
 			return;
 		}
 		setLoading(true);
+
+		if (!code) {
+			setLoading(false);
+			alert("Enter Code");
+			return;
+		}
 
 		try {
 			const completeSignUp = await signUp.attemptEmailAddressVerification(
@@ -75,18 +95,22 @@ export default function SignUpScreen() {
 			alert(err.errors[0].message);
 		} finally {
 			setLoading(true);
-			setFirstName("");
-			setLastName("");
-			setEmailAddress("");
-			setPassword("");
 		}
 	};
 
+	const onCancelPress = () => {
+		if (!isLoaded) {
+			return;
+		}
+		setPendingVerification(false);
+		router.replace('/(auth)/register');
+	}
+
 	return (
-		<SafeAreaView className="pt-6 px-4 bg-off-white flex-1">
+		<KeyboardAvoidingView className="flex-1 px-4 pt-6 bg-off-white" keyboardVerticalOffset={Platform.OS === 'android' ? 75 : 0}>
 			<Spinner visible={loading} />
 			{!pendingVerification && (
-				<View className="pt-6 flex-1">
+				<View className="flex-1 pt-6">
 					<View>
 						<Image
 							source={require("@/assets/images/logo.png")}
@@ -114,7 +138,7 @@ export default function SignUpScreen() {
 								</Text>
 							</View>
 						</View>
-						<View className="space-y-4">
+						<View className="space-y-4 h-[420px]">
 							<View>
 								<Text
 									style={{
@@ -172,6 +196,7 @@ export default function SignUpScreen() {
 									}}
 									placeholder="example@gmail.com"
 									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									autoCapitalize="none"
 									value={emailAddress}
 									onChangeText={(emailAddress) =>
 										setEmailAddress(emailAddress)
@@ -193,6 +218,7 @@ export default function SignUpScreen() {
 									}}
 									placeholder="Your password here"
 									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									autoCapitalize="none"
 									value={password}
 									secureTextEntry={true}
 									onChangeText={(password) =>
@@ -224,36 +250,110 @@ export default function SignUpScreen() {
 								className="mt-2 text-sm"
 							>
 								Already a member?{" "}
-								<Link href={"/login"} className="underline">
+								<Link href={"/login"} replace className="underline">
 									Login Here
 								</Link>
 							</Text>
 						</View>
 					</View>
-					<Text className="text-gray-400 text-sm text-center my-6">
+					<Text className="my-6 text-sm text-center text-gray-400">
 						or
 					</Text>
 					<SignInWithOAuth />
 				</View>
 			)}
+
 			{pendingVerification && (
-				<View>
+				<View className="flex-1 pt-6">
 					<View>
-						<TextInput
-							style={{
-								fontFamily: "OpenSans_400Regular",
-							}}
-							placeholder="Code..."
-							className="px-3 py-4 text-base border rounded-xl bg-off-white"
-							value={code}
-							onChangeText={(code) => setCode(code)}
+						<Image
+							source={require("@/assets/images/logo.png")}
+							className="object-contain w-10 h-10"
 						/>
 					</View>
-					<TouchableOpacity onPress={onPressVerify}>
-						<Text>Verify Email</Text>
-					</TouchableOpacity>
+					<View className="mt-12">
+						<Text
+							style={{
+								fontFamily: "Montserrat_600SemiBold",
+							}}
+							className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+						>
+							Enter Code
+						</Text>
+						<Text
+							style={{ fontFamily: "Montserrat_400Regular" }}
+							className="pl-1 text-base text-gray-500"
+						>
+							We sen't a code to your email address:
+						</Text>
+						<Text
+							style={{ fontFamily: "Poppins_500Medium" }}
+							className="mt-3 text-base text-gray-600"
+						>
+							- {emailAddress}
+						</Text>
+					</View>
+					<View className="h-[350px] items-center justify-center">
+						<OtpInput
+							numberOfDigits={6}
+							focusColor={Colors["main-orange"]}
+							onTextChange={(text) => setCode(text)}
+							onFilled={(text) => onPressVerify}
+							theme={{
+								pinCodeContainerStyle: {
+									height: 80,
+									width: 60,
+									borderWidth: 0,
+									borderBottomWidth: 1,
+								},
+							}}
+						/>
+						<Text
+							style={{ fontFamily: "Poppins_500Medium" }}
+							className="mt-6"
+						>
+							Resent Code in{" "}
+							{timer > 0 ? (
+								<Text className="text-main-orange">
+									0: {timer}
+								</Text>
+							) : (
+								<Text
+									onPress={onSignUpPress}
+									style={{ fontFamily: "Poppins_500Medium" }}
+									className="underline text-main-orange"
+								>
+									Send
+								</Text>
+							)}
+						</Text>
+					</View>
+					<View className="justify-end flex-1 py-10 space-y-3">
+						<TouchableOpacity
+							onPress={onPressVerify}
+							className="py-5 bg-main-orange rounded-xl"
+						>
+							<Text
+								style={{ fontFamily: "Poppins_600SemiBold" }}
+								className="text-base text-center text-off-white"
+							>
+								Verify Code
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={onCancelPress}
+							className="py-5 border border-dark-gray rounded-xl"
+						>
+							<Text
+								style={{ fontFamily: "Poppins_600SemiBold" }}
+								className="text-base text-center text-dark-gray"
+							>
+								Cancel
+							</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			)}
-		</SafeAreaView>
+		</KeyboardAvoidingView>
 	);
 }

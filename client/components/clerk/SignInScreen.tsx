@@ -32,8 +32,6 @@ export default function SignInScreen() {
 			alert(err.errors[0].message);
 		} finally {
 			setLoading(false);
-			setEmailAddress("");
-			setPassword("");
 		}
 	};
 	return (
@@ -99,6 +97,7 @@ export default function SignInScreen() {
 							style={{ fontFamily: "OpenSans_400Regular" }}
 							placeholder="example@gmail.com"
 							className="px-3 py-4 text-base border rounded-xl bg-off-white"
+							autoCapitalize="none"
 							secureTextEntry={true}
 							value={password}
 							onChangeText={(password) => setPassword(password)}
@@ -128,7 +127,7 @@ export default function SignInScreen() {
 						className="mt-2 text-sm"
 					>
 						Don't have an account yet?{" "}
-						<Link href={"/register"} className="underline">
+						<Link href={"/register"} replace className="underline">
 							Register Here
 						</Link>
 					</Text>
