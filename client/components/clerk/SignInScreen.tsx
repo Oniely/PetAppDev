@@ -27,8 +27,9 @@ export default function SignInScreen() {
 			// This is an important step,
 			// This indicates the user is signed in
 			await setActive({ session: completeSignIn.createdSessionId });
-			router.replace('/(tabs)/home');
+			router.replace("/(tabs)/home");
 		} catch (err: any) {
+			console.log(err.errors[0]);
 			alert(err.errors[0].message);
 		} finally {
 			setLoading(false);

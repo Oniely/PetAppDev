@@ -91,14 +91,13 @@ function RootLayoutNav() {
 
         if (isSignedIn && !inTabsGroup) {
             router.replace('/(tabs)/home/');
-        } 
-        if (!isSignedIn) {
+        } else if (!isSignedIn) {
             router.replace('/(auth)/login');
         }
     }, [isSignedIn])
 
     return (
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, animation: "fade", animationTypeForReplace: "pop" }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
         </Stack>

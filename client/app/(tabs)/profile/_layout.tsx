@@ -21,7 +21,7 @@ const ProfileLayout = () => {
 				headerLeft: () => (
 					<TouchableOpacity
 						onPress={router.back}
-						className="bg-off-white rounded-md ml-4"
+						className="bg-off-white rounded-md ml-2"
 					>
 						<Feather
 							name="chevron-left"
@@ -30,12 +30,14 @@ const ProfileLayout = () => {
 						/>
 					</TouchableOpacity>
 				),
+				animation: "ios",
+				animationTypeForReplace: "pop",
 			}}
 		>
 			<Stack.Screen name="index" options={{ title: "Your Profile" }} />
 			<Stack.Screen
 				name="edit_profile"
-				options={{ title: "Edit Profile", }}
+				options={{ title: "Edit Profile" }}
 			/>
 		</Stack>
 	);

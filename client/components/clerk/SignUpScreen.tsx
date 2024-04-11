@@ -305,8 +305,11 @@ export default function SignUpScreen() {
 									width: 60,
 									borderWidth: 0,
 									borderBottomWidth: 1,
-									borderBottomColor: Colors["dark-gray"]
+									borderColor: Colors["dark-gray"],
 								},
+								pinCodeTextStyle: {
+									fontFamily: "Montserrat_500Medium"
+								}
 							}}
 						/>
 						<Text

@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -8,19 +8,13 @@ import {
 	TextInput,
 	TouchableOpacity,
 	ScrollView,
-	KeyboardAvoidingView,
-	Platform,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { router } from "expo-router";
 import {
 	manipulateAsync,
-	ImageResult,
-	SaveFormat,
 } from "expo-image-manipulator";
-import * as FileSystem from "expo-file-system";
 
 const EditProfile = () => {
 	const { user } = useUser();
@@ -42,22 +36,23 @@ const EditProfile = () => {
 				});
 			}
 
-			if (currentPassword && newPassword) {
+			if (currentPassword || newPassword) {
 				await user?.updatePassword({
 					currentPassword,
 					newPassword,
 				});
 			}
 
-			if (image) {
-        const res = await manipulateAsync(image, [], { base64: true });
-        console.log(res)
-				await user?.setProfileImage({ file: JSON.stringify(res) });
-			}
+			// if (image) {
+      //   const res = await manipulateAsync(image, [], { base64: true });
+      //   console.log(res)
+			// 	await user?.setProfileImage({ file: JSON.stringify(res) });
+			// }
 
 			user?.reload();
 		} catch (error: any) {
-			console.log(error.errors[0].message);
+      console.log(error)
+			alert(error.errors[0].message);
 		} finally {
 			setLoading(false);
 		}
@@ -68,7 +63,6 @@ const EditProfile = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [4, 3],
       quality: 1,
-      base64: true
     });
 
 		if (!result.canceled) {
@@ -80,7 +74,7 @@ const EditProfile = () => {
 		<ScrollView className="flex-1">
 			<SafeAreaView className="flex-1 pb-3">
 				<Spinner visible={loading} />
-				<View className="h-[240px] items-center justify-center space-y-3">
+				<View className="h-[220px] items-center justify-center space-y-3">
 					<View className="relative">
 						<Image
 							source={{
@@ -102,7 +96,7 @@ const EditProfile = () => {
 						<Text>First Name</Text>
 						<TextInput
 							placeholder="Your First Name"
-							className="px-3 py-2 border rounded-xl"
+							className="px-3 py-3 border rounded-xl"
 							value={firstName!}
 							onChangeText={(text) => setFirstName(text)}
 						/>
@@ -111,7 +105,7 @@ const EditProfile = () => {
 						<Text>Last Name</Text>
 						<TextInput
 							placeholder="Your Last Name"
-							className="px-3 py-2 border rounded-xl"
+							className="px-3 py-3 border rounded-xl"
 							value={lastName!}
 							onChangeText={(text) => setLastName(text)}
 						/>
@@ -119,8 +113,8 @@ const EditProfile = () => {
 					<View className="gap-1">
 						<Text>Current Password</Text>
 						<TextInput
-							placeholder="Your Password"
-							className="px-3 py-2 border rounded-xl"
+							placeholder="Your Current Password"
+							className="px-3 py-3 border rounded-xl"
 							autoCapitalize="none"
 							secureTextEntry={true}
 							value={currentPassword}
@@ -130,8 +124,8 @@ const EditProfile = () => {
 					<View className="gap-1">
 						<Text>New Password</Text>
 						<TextInput
-							placeholder="Your Password"
-							className="px-3 py-2 border rounded-xl"
+							placeholder="Your New Password"
+							className="px-3 py-3 border rounded-xl"
 							autoCapitalize="none"
 							secureTextEntry={true}
 							value={newPassword}
