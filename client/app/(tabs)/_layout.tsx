@@ -1,12 +1,10 @@
 import React from "react";
-import { Tabs, useNavigation } from "expo-router";
+import { Tabs } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import Colors from "@/constants/Colors";
 
 export default function TabLayout() {
-	const navigation = useNavigation();
-
 	return (
 		<Tabs
 			screenOptions={{
@@ -34,8 +32,11 @@ export default function TabLayout() {
 					shadowOpacity: 0,
 				},
 				headerShadowVisible: false,
+				tabBarHideOnKeyboard: true,
 				headerLeft: () => (
-					<TouchableOpacity onPress={() => navigation.goBack()} className="bg-off-white rounded-md ml-4">
+					<TouchableOpacity
+						className="bg-off-white rounded-md ml-4"
+					>
 						<Feather
 							name="chevron-left"
 							size={26}
@@ -81,7 +82,6 @@ export default function TabLayout() {
 					tabBarIcon: ({ color }) => (
 						<Feather name="user" size={24} color={color} />
 					),
-					headerShown: true
 				}}
 			/>
 		</Tabs>

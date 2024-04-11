@@ -305,6 +305,7 @@ export default function SignUpScreen() {
 									width: 60,
 									borderWidth: 0,
 									borderBottomWidth: 1,
+									borderBottomColor: Colors["dark-gray"]
 								},
 							}}
 						/>

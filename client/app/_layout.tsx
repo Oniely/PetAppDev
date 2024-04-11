@@ -3,7 +3,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 
-import { ClerkProvider, useAuth, useUser } from "@clerk/clerk-expo";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 
 import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins";
@@ -91,7 +91,8 @@ function RootLayoutNav() {
 
         if (isSignedIn && !inTabsGroup) {
             router.replace('/(tabs)/home/');
-        } else if (!isSignedIn) {
+        } 
+        if (!isSignedIn) {
             router.replace('/(auth)/login');
         }
     }, [isSignedIn])
