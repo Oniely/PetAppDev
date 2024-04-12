@@ -1,29 +1,34 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { useFonts } from "expo-font";
 import {
-	Poppins_400Regular,
-	Poppins_600SemiBold,
-	Poppins_700Bold,
-} from "@expo-google-fonts/poppins";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
+	View,
+	Text,
+	TouchableOpacity,
+	Image,
+	SafeAreaView,
+} from "react-native";
+import { Redirect, router } from 'expo-router';
+import { Feather } from '@expo/vector-icons'
+import React from "react";
+import { useAuth } from '@clerk/clerk-expo';
+
 
 const Onboarding = () => {
-	const [fontsLoaded] = useFonts({
-		Poppins_400Regular,
-		Poppins_600SemiBold,
-		Poppins_700Bold,
-	});
+	const { isLoaded, isSignedIn } = useAuth();
+
+	if (isLoaded && isSignedIn) {
+		<Redirect href={'/(tabs)/home/'} />
+	}
 
 	return (
-		<View className="h-full px-4 bg-orange-white">
-			<View className="flex-row justify-between">
+		<SafeAreaView className="h-full px-4 bg-orange-white">
+			<View className="flex-row justify-between pt-12">
 				<Image
 					source={require("@/assets/images/logo.png")}
 					className="object-contain w-10 h-10"
 				/>
-				<TouchableOpacity onPress={() => router.push('/')} className="bg-main-orange items-center justify-center rounded-full w-10 h-10">
+				<TouchableOpacity
+					onPress={() => router.push("/(auth)/register")}
+					className="bg-main-orange items-center justify-center rounded-full w-10 h-10"
+				>
 					<Feather name="arrow-right" size={24} color="#FFF5E9" />
 				</TouchableOpacity>
 			</View>
@@ -63,7 +68,10 @@ const Onboarding = () => {
 						</Text>
 					</View>
 				</View>
-				<TouchableOpacity onPress={() => router.push('/')} className="items-center py-4 mt-6 rounded-full bg-main-orange">
+				<TouchableOpacity
+					onPress={() => router.push("/(auth)/register")}
+					className="items-center py-4 mt-6 rounded-full bg-main-orange"
+				>
 					<Text
 						style={{ fontFamily: "Poppins_600SemiBold" }}
 						className="text-lg text-orange-white"
@@ -72,7 +80,7 @@ const Onboarding = () => {
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 

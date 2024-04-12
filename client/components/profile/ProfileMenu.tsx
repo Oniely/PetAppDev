@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors";
 import { useAuth } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
+import axios from "axios";
 
 const ProfileMenu = () => {
 	const { signOut } = useAuth();
@@ -34,11 +35,14 @@ const ProfileMenu = () => {
 
 			{/* LOGOUT  */}
 			<TouchableOpacity
-				onPress={() => signOut()}
+				onPress={async () => {
+					signOut();
+					await axios.post('/auth/logout');
+				}}
 				className="flex-row items-center py-3"
 			>
 				<View className="flex-1 flex-row items-center gap-4">
-					<View className="bg-light-orange w-12 h-12 items-center justify-center rounded-full">
+					<View className="bg-light-orange/60 w-12 h-12 items-center justify-center rounded-full">
 						<Feather
 							name="log-out"
 							size={20}
@@ -47,7 +51,7 @@ const ProfileMenu = () => {
 					</View>
 					<Text
 						style={{ fontFamily: "Poppins_500Medium" }}
-						className="text-[16px] capitalize text-red-600"
+						className="text-[16px] capitalize text-red-500"
 					>
 						Logout
 					</Text>

@@ -14,7 +14,7 @@ const ProfileMenuItem = ({ link, title, icon }: Props) => {
     // @ts-ignore
 		<TouchableOpacity onPress={() => router.push(link)} className="flex-row items-center py-3 mb-1 rounded-full">
 			<View className="flex-1 flex-row items-center gap-4">
-				<View className="bg-light-orange w-12 h-12 items-center justify-center rounded-full">
+				<View className="bg-light-orange/60 w-12 h-12 items-center justify-center rounded-full">
 					{icon}
 				</View>
 				<Text
