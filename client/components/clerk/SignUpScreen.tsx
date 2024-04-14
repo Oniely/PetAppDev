@@ -65,7 +65,7 @@ export default function SignUpScreen() {
 	};
 
 	return (
-		<SafeAreaView className="flex-1 bg-off-white">
+		<SafeAreaView className="flex-1 bg-orange-white">
 			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
 				<View className="flex-1 pt-6">
@@ -111,7 +111,7 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="John"
-									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									className="px-3 py-4 text-base border rounded-xl"
 									value={firstname}
 									onChangeText={(text) => setFirstname(text)}
 								/>
@@ -130,7 +130,7 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="Doe"
-									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									className="px-3 py-4 text-base border rounded-xl"
 									value={lastname}
 									onChangeText={(text) => setLastname(text)}
 								/>
@@ -149,7 +149,7 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="example@gmail.com"
-									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									className="px-3 py-4 text-base border rounded-xl"
 									autoCapitalize="none"
 									value={email}
 									onChangeText={(text) => setEmail(text)}
@@ -169,7 +169,7 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="Your password here"
-									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									className="px-3 py-4 text-base border rounded-xl"
 									autoCapitalize="none"
 									value={password}
 									secureTextEntry={true}

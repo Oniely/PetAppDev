@@ -23,7 +23,7 @@ const Verify = () => {
 	useEffect(() => {
 		async function signUp() {
 			if (!userId) return;
-			console.log(userId);
+			console.log("SignUpScreen", userId);
 			await axios.post("/auth/sign-up", { userId });
 		}
 
@@ -90,7 +90,7 @@ const Verify = () => {
 	};
 
 	return (
-		<SafeAreaView className="flex-1 bg-off-white">
+		<SafeAreaView className="flex-1 bg-orange-white">
 			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
 				<View className="flex-1 pt-6">
@@ -168,7 +168,7 @@ const Verify = () => {
 						>
 							<Text
 								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-base text-center text-off-white"
+								className="text-base text-center text-orange-white"
 							>
 								Verify Code
 							</Text>

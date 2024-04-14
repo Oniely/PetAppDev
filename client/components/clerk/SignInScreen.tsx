@@ -19,7 +19,7 @@ export default function SignInScreen() {
 	useEffect(() => {
 		async function signIn() {
 			if (!userId) return;
-			console.log(userId);
+			console.log("SignInScreen", userId);
 			await axios.post('/auth/sign-in', { userId });
 		}
 

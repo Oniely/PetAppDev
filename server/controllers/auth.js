@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const jwt = require('jsonwebtoken');
+const { PetOwner } = require("../models/PetOwner");
+const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
 function createToken(user) {
@@ -16,16 +16,20 @@ const signIn = async (req, res) => {
 	console.log(`Sign In with: ${userId}`);
 
 	try {
-		const user = await User.find({ userId });
+		const user = await PetOwner.find({ userId });
 
 		if (user) {
 			const token = createToken(user);
-			res.cookie("token", token, { httpOnly: true }).status(StatusCodes.OK).json(user);
+			res.cookie("token", token, { httpOnly: true })
+				.status(StatusCodes.OK)
+				.json({ onboarded: user.onboarded });
 		}
 	} catch (error) {
-		res.status(StatusCodes.BAD_REQUEST).json({ message: "Something went wrong..." });
+		res.status(StatusCodes.BAD_REQUEST).json({
+			message: "Something went wrong...",
+		});
 	}
-}
+};
 
 const signUp = async (req, res) => {
 	const { userId } = req.body;
@@ -33,12 +37,17 @@ const signUp = async (req, res) => {
 	console.log(`Sign Up with: ${userId}`);
 
 	try {
-		const user = new User({ userId: userId });
-		await user.save();
+		const user = await PetOwner.findOneAndUpdate(
+			{ userId },
+			{ userId },
+			{ upsert: true, new: true }
+		);
 
 		if (user) {
 			const token = createToken(user);
-			res.cookie("token", token, { httpOnly: true }).status(StatusCodes.CREATED).json(user);
+			res.cookie("token", token, { httpOnly: true })
+				.status(StatusCodes.CREATED)
+				.json({ onboarded: user.onboarded });
 		}
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json(error);
@@ -47,11 +56,13 @@ const signUp = async (req, res) => {
 
 const logout = async (req, res) => {
 	console.log(`Logging out!`);
-	res.cookie("token", "", { httpOnly: true }).status(StatusCodes.OK).json(true);
-}
+	res.cookie("token", "", { httpOnly: true })
+		.status(StatusCodes.OK)
+		.json(true);
+};
 
 module.exports = {
 	signIn,
 	signUp,
-	logout
+	logout,
 };

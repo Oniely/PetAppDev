@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { useOAuth } from "@clerk/clerk-expo";
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
+import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithOAuth = () => {
+	const { userId, isSignedIn } = useAuth();
+
+	useEffect(() => {
+		async function DO() {
+			if (!userId) return;
+			console.log("OAuth", userId)
+			await axios.post("/auth/sign-up", { userId });
+		}
+
+		DO();
+	}, [isSignedIn])
+
 	// Warm up the android browser to improve UX
 	// https://docs.expo.dev/guides/authentication/#improving-user-experience
 	useWarmUpBrowser();
@@ -21,7 +34,7 @@ const SignInWithOAuth = () => {
 			if (createdSessionId) {
 				setActive!({ session: createdSessionId });
 			} else {
-				// Use signIn or signUp for next steps such as MFA
+
 			}
 		} catch (err) {
 			console.error("OAuth error", err);
@@ -33,7 +46,10 @@ const SignInWithOAuth = () => {
 			onPress={onPress}
 			className="border flex flex-row items-center justify-center h-14 rounded-xl space-x-2"
 		>
-			<Image source={require('@/assets/images/google-icon.png')} className="w-5 h-5" />
+			<Image
+				source={require("@/assets/images/google-icon.png")}
+				className="w-5 h-5"
+			/>
 			<Text
 				style={{ fontFamily: "OpenSans_400Regular" }}
 				className="text-center text-base"

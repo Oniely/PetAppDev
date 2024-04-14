@@ -53,7 +53,6 @@ const tokenCache = {
 SplashScreen.preventAutoHideAsync();
 
 axios.defaults.baseURL = "http://192.168.1.36:4000";
-axios.defaults.withCredentials = true;
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
