@@ -5,7 +5,6 @@ import { Link, router } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spinner from "react-native-loading-spinner-overlay";
-import { clerk } from "@clerk/clerk-expo/dist/singleton";
 import axios from "axios";
 
 export default function SignInScreen() {
@@ -117,12 +116,6 @@ export default function SignInScreen() {
 								onChangeText={(password) => setPassword(password)}
 								id="password"
 							/>
-							<Text
-								style={{ fontFamily: "OpenSans_400Regular" }}
-								className="mt-1 text-[14px] underline"
-							>
-								Forgot Password?
-							</Text>
 						</View>
 					</View>
 					<View className="items-center">
@@ -142,7 +135,7 @@ export default function SignInScreen() {
 							className="mt-2 text-sm"
 						>
 							Don't have an account yet?{" "}
-							<Link href={"/register"} replace className="underline">
+							<Link href={"/(auth)/(register)"} replace className="underline">
 								Register Here
 							</Link>
 						</Text>

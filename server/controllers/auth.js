@@ -13,6 +13,8 @@ function createToken(user) {
 const signIn = async (req, res) => {
 	const { userId } = req.body;
 
+	console.log(`Sign In with: ${userId}`);
+
 	try {
 		const user = await User.find({ userId });
 
@@ -27,7 +29,9 @@ const signIn = async (req, res) => {
 
 const signUp = async (req, res) => {
 	const { userId } = req.body;
-	
+
+	console.log(`Sign Up with: ${userId}`);
+
 	try {
 		const user = new User({ userId: userId });
 		await user.save();
@@ -42,6 +46,7 @@ const signUp = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+	console.log(`Logging out!`);
 	res.cookie("token", "", { httpOnly: true }).status(StatusCodes.OK).json(true);
 }
 

@@ -52,7 +52,7 @@ const tokenCache = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-axios.defaults.baseURL = "http://192.168.1.34:4000";
+axios.defaults.baseURL = "http://192.168.1.36:4000";
 axios.defaults.withCredentials = true;
 
 export default function RootLayout() {

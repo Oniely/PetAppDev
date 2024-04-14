@@ -26,7 +26,7 @@ const Onboarding = () => {
 					className="object-contain w-10 h-10"
 				/>
 				<TouchableOpacity
-					onPress={() => router.push("/(auth)/register")}
+					onPress={() => router.push("/(auth)/login")}
 					className="bg-main-orange items-center justify-center rounded-full w-10 h-10"
 				>
 					<Feather name="arrow-right" size={24} color="#FFF5E9" />
@@ -69,7 +69,7 @@ const Onboarding = () => {
 					</View>
 				</View>
 				<TouchableOpacity
-					onPress={() => router.push("/(auth)/register")}
+					onPress={() => router.push("/(auth)/login")}
 					className="items-center py-4 mt-6 rounded-full bg-main-orange"
 				>
 					<Text

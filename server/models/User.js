@@ -14,7 +14,20 @@ const UserSchema = new Schema({
 	},
 	image_url: String,
 	phoneNumber: String,
-	address: String
+	address: {
+		lat: {
+			type: Number,
+			default: 0
+		},
+		long: {
+			type: Number,
+			default: 0
+		}
+	},
+	onboarded: {
+		type: Boolean,
+		default: false
+	}
 });
 
 module.exports = model("User", UserSchema);

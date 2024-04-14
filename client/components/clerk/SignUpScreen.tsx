@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
 	Image,
 	ScrollView,
@@ -7,372 +6,208 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { useAuth, useSignUp } from "@clerk/clerk-expo";
+import { useSignUp } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
-import Spinner from "react-native-loading-spinner-overlay";
-import { OtpInput } from "react-native-otp-entry";
-import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import axios from "axios";
+import useRegisterStore from "@/hooks/store/register";
 
 export default function SignUpScreen() {
-	const { isLoaded, signUp, setActive } = useSignUp();
-	const { userId } = useAuth();
+	const { signUp } = useSignUp();
 
-	const [firstName, setFirstName] = React.useState("");
-	const [lastName, setLastName] = React.useState("");
-	const [emailAddress, setEmailAddress] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const [pendingVerification, setPendingVerification] = React.useState(false);
-	const [code, setCode] = React.useState("");
-	const [loading, setLoading] = React.useState(false);
-	const [timer, setTimer] = React.useState(60);
-
-	React.useEffect(() => {
-		if (pendingVerification === true) {
-			if (timer > 0) {
-				const timerCountInterval = setInterval(() => {
-					setTimer(timer - 1);
-				}, 1000);
-
-				return () => clearInterval(timerCountInterval);
-			}
-		} else {
-			setTimer(60);
-		}
-	}, [timer, pendingVerification]);
-
-	React.useEffect(() => {
-		async function signUp() {
-			if (!userId) return;
-			console.log(userId);
-			await axios.post('/auth/sign-up', { userId });
-		}
-
-		signUp();
-	}, [signUp])
+	const {
+		firstname,
+		lastname,
+		email,
+		password,
+		setFirstname,
+		setLastname,
+		setEmail,
+		setPassword,
+		setIsLoading,
+	} = useRegisterStore();
 
 	// start the sign up process.
 	const onSignUpPress = async () => {
-		if (!isLoaded) {
+		setIsLoading(true);
+
+		if (!firstname || !lastname || !email || !password) {
+			alert("All fields are required");
+			setIsLoading(false);
 			return;
 		}
-		setLoading(true);
 
 		try {
-			await signUp.create({
-				firstName,
-				lastName,
-				emailAddress,
+			await signUp!.create({
+				firstName: firstname,
+				lastName: lastname,
+				emailAddress: email,
 				password,
 			});
 
 			// send the email.
-			await signUp.prepareEmailAddressVerification({
+			await signUp!.prepareEmailAddressVerification({
 				strategy: "email_code",
 			});
 
-			// change the UI to our pending section.
-			setPendingVerification(true);
+			router.push("/(auth)/(register)/verify");
 		} catch (err: any) {
 			alert(err.errors[0].message);
 		} finally {
-			setLoading(false);
+			setIsLoading(false);
 		}
 	};
-
-	// This verifies the user using email code that is delivered.
-	const onPressVerify = async () => {
-		if (!isLoaded) {
-			return;
-		}
-		setLoading(true);
-
-		if (!code) {
-			setLoading(false);
-			alert("Enter Code");
-			return;
-		}
-
-		try {
-			const completeSignUp = await signUp.attemptEmailAddressVerification(
-				{
-					code,
-				}
-			);
-
-			await setActive({ session: completeSignUp.createdSessionId });
-		} catch (err: any) {
-			alert(err.errors[0].message);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const onCancelPress = () => {
-		if (!isLoaded) {
-			return;
-		}
-		setPendingVerification(false);
-		router.replace('/(auth)/register');
-	}
 
 	return (
 		<SafeAreaView className="flex-1 bg-off-white">
-			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
-				{!pendingVerification && (
-					<View className="flex-1 pt-6">
-						<View>
-							<Image
-								source={require("@/assets/images/logo.png")}
-								className="object-contain w-10 h-10"
-							/>
-						</View>
-						<View className="mt-8">
-							<View className="space-y-2">
-								<View className="gap-1">
-									<Text
-										style={{
-											fontFamily: "Montserrat_600SemiBold",
-										}}
-										className="text-[50px] font-semibold text-gray-800 leading-[55px]"
-									>
-										Create New
-									</Text>
-									<Text
-										style={{
-											fontFamily: "Montserrat_600SemiBold",
-										}}
-										className="text-[50px] font-semibold text-gray-800 leading-[55px]"
-									>
-										Account
-									</Text>
-								</View>
-							</View>
-							<View className="space-y-4 h-[420px]">
-								<View>
-									<Text
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										className="text-lg font-medium"
-									>
-										First Name
-									</Text>
-									<TextInput
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										placeholder="John"
-										className="px-3 py-4 text-base border rounded-xl bg-off-white"
-										value={firstName}
-										onChangeText={(firstName) =>
-											setFirstName(firstName)
-										}
-									/>
-								</View>
-								<View>
-									<Text
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										className="text-lg font-medium"
-									>
-										Last Name
-									</Text>
-									<TextInput
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										placeholder="Doe"
-										className="px-3 py-4 text-base border rounded-xl bg-off-white"
-										value={lastName}
-										onChangeText={(lastName) =>
-											setLastName(lastName)
-										}
-									/>
-								</View>
-								<View>
-									<Text
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										className="text-lg font-medium"
-									>
-										Email Address
-									</Text>
-									<TextInput
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										placeholder="example@gmail.com"
-										className="px-3 py-4 text-base border rounded-xl bg-off-white"
-										autoCapitalize="none"
-										value={emailAddress}
-										onChangeText={(emailAddress) =>
-											setEmailAddress(emailAddress)
-										}
-									/>
-								</View>
-								<View>
-									<Text
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										className="text-lg font-medium"
-									>
-										Password
-									</Text>
-									<TextInput
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										placeholder="Your password here"
-										className="px-3 py-4 text-base border rounded-xl bg-off-white"
-										autoCapitalize="none"
-										value={password}
-										secureTextEntry={true}
-										onChangeText={(password) =>
-											setPassword(password)
-										}
-									/>
-									<Text
-										style={{
-											fontFamily: "OpenSans_400Regular",
-										}}
-										className="mt-1 text-[14px] underline"
-									/>
-								</View>
-							</View>
-							<View className="items-center">
-								<TouchableOpacity
-									onPress={onSignUpPress}
-									className="items-center w-full py-4 rounded-xl bg-main-orange"
-								>
-									<Text
-										style={{ fontFamily: "OpenSans_700Bold" }}
-										className="text-lg text-neutral-100"
-									>
-										Sign Up
-									</Text>
-								</TouchableOpacity>
+				<View className="flex-1 pt-6">
+					<View>
+						<Image
+							source={require("@/assets/images/logo.png")}
+							className="object-contain w-10 h-10"
+						/>
+					</View>
+					<View className="mt-6">
+						<View className="space-y-2 mb-3">
+							<View className="gap-1">
 								<Text
-									style={{ fontFamily: "OpenSans_400Regular" }}
-									className="mt-2 text-sm"
+									style={{
+										fontFamily: "Montserrat_600SemiBold",
+									}}
+									className="text-[50px] font-semibold text-gray-800 leading-[55px]"
 								>
-									Already a member?{" "}
-									<Link href={"/login"} replace className="underline">
-										Login Here
-									</Link>
+									Create New
+								</Text>
+								<Text
+									style={{
+										fontFamily: "Montserrat_600SemiBold",
+									}}
+									className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+								>
+									Account
 								</Text>
 							</View>
 						</View>
-						<Text className="my-6 text-sm text-center text-gray-400">
-							or
-						</Text>
-						<SignInWithOAuth />
-					</View>
-				)}
-				{pendingVerification && (
-					<View className="flex-1 pt-6">
-						<View>
-							<Image
-								source={require("@/assets/images/logo.png")}
-								className="object-contain w-10 h-10"
-							/>
+						<View className="space-y-4 h-[420px]">
+							<View>
+								<Text
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									className="text-lg font-medium"
+								>
+									First Name
+								</Text>
+								<TextInput
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									placeholder="John"
+									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									value={firstname}
+									onChangeText={(text) => setFirstname(text)}
+								/>
+							</View>
+							<View>
+								<Text
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									className="text-lg font-medium"
+								>
+									Last Name
+								</Text>
+								<TextInput
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									placeholder="Doe"
+									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									value={lastname}
+									onChangeText={(text) => setLastname(text)}
+								/>
+							</View>
+							<View>
+								<Text
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									className="text-lg font-medium"
+								>
+									Email Address
+								</Text>
+								<TextInput
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									placeholder="example@gmail.com"
+									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									autoCapitalize="none"
+									value={email}
+									onChangeText={(text) => setEmail(text)}
+								/>
+							</View>
+							<View>
+								<Text
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									className="text-lg font-medium"
+								>
+									Password
+								</Text>
+								<TextInput
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									placeholder="Your password here"
+									className="px-3 py-4 text-base border rounded-xl bg-off-white"
+									autoCapitalize="none"
+									value={password}
+									secureTextEntry={true}
+									onChangeText={(text) => setPassword(text)}
+								/>
+								<Text
+									style={{
+										fontFamily: "OpenSans_400Regular",
+									}}
+									className="mt-1 text-[14px] underline"
+								/>
+							</View>
 						</View>
-						<View className="mt-12">
-							<Text
-								style={{
-									fontFamily: "Montserrat_600SemiBold",
-								}}
-								className="text-[50px] font-semibold text-gray-800 leading-[55px]"
-							>
-								Enter Code
-							</Text>
-							<Text
-								style={{ fontFamily: "Montserrat_400Regular" }}
-								className="pl-1 text-base text-gray-500"
-							>
-								We sen't a code to your email address:
-							</Text>
-							<Text
-								style={{ fontFamily: "Poppins_500Medium" }}
-								className="mt-3 text-base text-gray-600"
-							>
-								- {emailAddress}
-							</Text>
-						</View>
-						<View className="h-[350px] items-center justify-center">
-							<OtpInput
-								numberOfDigits={6}
-								focusColor={Colors["main-orange"]}
-								onTextChange={(text) => setCode(text)}
-								onFilled={(text) => {
-									setCode(text);
-									onPressVerify();
-								}}
-								theme={{
-									pinCodeContainerStyle: {
-										height: 80,
-										width: 60,
-										borderWidth: 0,
-										borderBottomWidth: 1,
-										borderColor: Colors["dark-gray"],
-									},
-									pinCodeTextStyle: {
-										fontFamily: "Montserrat_500Medium"
-									}
-								}}
-							/>
-							<Text
-								style={{ fontFamily: "Poppins_500Medium" }}
-								className="mt-6"
-							>
-								Resent Code in{" "}
-								{timer > 0 ? (
-									<Text className="text-main-orange">
-										0: {timer}
-									</Text>
-								) : (
-									<Text
-										onPress={onSignUpPress}
-										style={{ fontFamily: "Poppins_500Medium" }}
-										className="underline text-main-orange"
-									>
-										Send
-									</Text>
-								)}
-							</Text>
-						</View>
-						<View className="justify-end flex-1 py-10 space-y-3">
+						<View className="items-center">
 							<TouchableOpacity
-								onPress={onPressVerify}
-								className="py-5 bg-main-orange rounded-xl"
+								onPress={onSignUpPress}
+								className="items-center w-full py-4 rounded-xl bg-main-orange"
 							>
 								<Text
-									style={{ fontFamily: "Poppins_600SemiBold" }}
-									className="text-base text-center text-off-white"
+									style={{ fontFamily: "OpenSans_700Bold" }}
+									className="text-lg text-neutral-100"
 								>
-									Verify Code
+									Sign Up
 								</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={onCancelPress}
-								className="py-5 border border-dark-gray rounded-xl"
+							<Text
+								style={{ fontFamily: "OpenSans_400Regular" }}
+								className="mt-2 text-sm"
 							>
-								<Text
-									style={{ fontFamily: "Poppins_600SemiBold" }}
-									className="text-base text-center text-dark-gray"
+								Already a member?{" "}
+								<Link
+									href={"/login"}
+									replace
+									className="underline"
 								>
-									Cancel
-								</Text>
-							</TouchableOpacity>
+									Login Here
+								</Link>
+							</Text>
 						</View>
 					</View>
-				)}
+					<Text className="my-5 text-sm text-center text-gray-400">
+						or
+					</Text>
+					<SignInWithOAuth />
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
