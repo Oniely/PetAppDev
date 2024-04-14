@@ -5,19 +5,20 @@ import axios from "axios";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import { OtpInput } from "react-native-otp-entry";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Verify = () => {
-	const { signUp, setActive } = useSignUp();
+	const { signUp, setActive, isLoaded } = useSignUp();
 	const { userId } = useAuth();
 
 	const {
 		email,
-		setIsLoading,
 	} = useRegisterStore();
 	const [code, setCode] = useState("");
-	const [timer, setTimer] = useState(60);
+	const [timer, setTimer] = useState(30);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		async function signUp() {
@@ -40,40 +41,47 @@ const Verify = () => {
 	}, [timer]);
 
 	const resendCode = async () => {
-		setIsLoading(true);
+		if (!isLoaded) {
+			return;
+		}
+		setLoading(true);
 
 		try {
 			// send the email.
-			await signUp!.prepareEmailAddressVerification({
+			await signUp.prepareEmailAddressVerification({
 				strategy: "email_code",
 			});
 		} catch (err: any) {
 			alert(err.errors[0].message);
 		} finally {
-			setIsLoading(false);
+			setLoading(false);
 		}
 	};
 
 	const onPressVerify = async () => {
-		setIsLoading(true);
+		if (!isLoaded) {
+			return;
+		}
+
+		setLoading(true);
 
 		if (!code) {
-			setIsLoading(false);
+			setLoading(false);
 			alert("Enter Code");
 			return;
 		}
 
 		try {
 			const completeSignUp =
-				await signUp!.attemptEmailAddressVerification({
+				await signUp.attemptEmailAddressVerification({
 					code,
 				});
 
-			await setActive!({ session: completeSignUp.createdSessionId });
+			await setActive({ session: completeSignUp.createdSessionId });
 		} catch (err: any) {
 			alert(err.errors[0].message);
 		} finally {
-			setIsLoading(false);
+			setLoading(false);
 		}
 	};
 
@@ -83,6 +91,7 @@ const Verify = () => {
 
 	return (
 		<SafeAreaView className="flex-1 bg-off-white">
+			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
 				<View className="flex-1 pt-6">
 					<View>

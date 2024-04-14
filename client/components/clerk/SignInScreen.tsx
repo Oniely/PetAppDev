@@ -1,20 +1,21 @@
-import React, { useEffect } from "react";
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useUser, useSignIn, useAuth } from "@clerk/clerk-expo";
-import { Link, router } from "expo-router";
+import { useSignIn, useAuth } from "@clerk/clerk-expo";
+import { Link } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function SignInScreen() {
 	const { signIn, setActive, isLoaded } = useSignIn();
 	const { userId } = useAuth();
 
-	const [emailAddress, setEmailAddress] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const [loading, setLoading] = React.useState(false);
+	const [emailAddress, setEmailAddress] = useState("");
+	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 
+	// call to backend when signIn has been triggered
 	useEffect(() => {
 		async function signIn() {
 			if (!userId) return;
@@ -29,7 +30,9 @@ export default function SignInScreen() {
 		if (!isLoaded) {
 			return;
 		}
+
 		setLoading(true);
+
 		try {
 			const completeSignIn = await signIn.create({
 				identifier: emailAddress,
@@ -46,9 +49,9 @@ export default function SignInScreen() {
 		}
 	};
 	return (
-		<SafeAreaView className="bg-off-white flex-1 h-full">
+		<SafeAreaView className="bg-orange-white flex-1 h-full">
+			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
-				<Spinner visible={loading} />
 				<View className="mt-6">
 					<Image
 						source={require("@/assets/images/logo.png")}
@@ -90,7 +93,7 @@ export default function SignInScreen() {
 							<TextInput
 								style={{ fontFamily: "OpenSans_400Regular" }}
 								placeholder="example@gmail.com"
-								className="px-3 py-4 text-base border rounded-xl bg-off-white"
+								className="px-3 py-4 text-base border rounded-xl"
 								autoCapitalize="none"
 								value={emailAddress}
 								onChangeText={(emailAddress) =>
@@ -109,7 +112,7 @@ export default function SignInScreen() {
 							<TextInput
 								style={{ fontFamily: "OpenSans_400Regular" }}
 								placeholder="example@gmail.com"
-								className="px-3 py-4 text-base border rounded-xl bg-off-white"
+								className="px-3 py-4 text-base border rounded-xl"
 								autoCapitalize="none"
 								secureTextEntry={true}
 								value={password}

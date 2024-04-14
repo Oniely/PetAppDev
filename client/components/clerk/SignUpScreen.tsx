@@ -11,10 +11,11 @@ import { Link, router } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useRegisterStore from "@/hooks/store/register";
+import Spinner from "react-native-loading-spinner-overlay";
+import { useState } from "react";
 
 export default function SignUpScreen() {
-	const { signUp } = useSignUp();
-
+	const { signUp, isLoaded } = useSignUp();
 	const {
 		firstname,
 		lastname,
@@ -24,21 +25,26 @@ export default function SignUpScreen() {
 		setLastname,
 		setEmail,
 		setPassword,
-		setIsLoading,
 	} = useRegisterStore();
+
+	const [loading, setLoading] = useState(false);
 
 	// start the sign up process.
 	const onSignUpPress = async () => {
-		setIsLoading(true);
+		if (!isLoaded) {
+			return;
+		}
+
+		setLoading(true);
 
 		if (!firstname || !lastname || !email || !password) {
 			alert("All fields are required");
-			setIsLoading(false);
+			setLoading(false);
 			return;
 		}
 
 		try {
-			await signUp!.create({
+			await signUp.create({
 				firstName: firstname,
 				lastName: lastname,
 				emailAddress: email,
@@ -46,7 +52,7 @@ export default function SignUpScreen() {
 			});
 
 			// send the email.
-			await signUp!.prepareEmailAddressVerification({
+			await signUp.prepareEmailAddressVerification({
 				strategy: "email_code",
 			});
 
@@ -54,12 +60,13 @@ export default function SignUpScreen() {
 		} catch (err: any) {
 			alert(err.errors[0].message);
 		} finally {
-			setIsLoading(false);
+			setLoading(false);
 		}
 	};
 
 	return (
 		<SafeAreaView className="flex-1 bg-off-white">
+			<Spinner visible={loading} />
 			<ScrollView className="flex-1 px-4">
 				<View className="flex-1 pt-6">
 					<View>

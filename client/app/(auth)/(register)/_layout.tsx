@@ -1,16 +1,7 @@
-import useRegisterStore from "@/hooks/store/register";
-import { router, Stack } from "expo-router";
-import Spinner from "react-native-loading-spinner-overlay";
+import { Stack } from "expo-router";
 
 const RegisterLayout = () => {
-	const { isLoading } = useRegisterStore();
-
-	return (
-		<>
-			<Spinner visible={isLoading} />
-			<Stack screenOptions={{ headerShown: false }} />
-		</>
-	);
+	return <Stack screenOptions={{ headerShown: false }} />;
 };
 
 export default RegisterLayout;
