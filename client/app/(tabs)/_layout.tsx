@@ -13,15 +13,22 @@ export default function TabLayout() {
 					headerShown: false,
 					tabBarActiveTintColor: "#F59245",
 					tabBarInactiveTintColor: "#7E808F",
+					tabBarActiveBackgroundColor: Colors["off-white"],
 					tabBarStyle: {
-						height: 75,
+						height: 80,
+						backgroundColor: "#FFFFFF",
+						shadowOpacity: 0,
+						borderWidth: 0
 					},
 					tabBarIconStyle: {
 						marginBottom: -12,
 					},
 					tabBarLabelStyle: {
-						fontSize: 12,
-						marginBottom: 15,
+						fontSize: 11,
+						marginBottom: 18,
+					},
+					tabBarItemStyle: {
+						borderRadius: 5,
 					},
 					headerTitleAlign: "center",
 					headerTitleStyle: {
@@ -67,11 +74,20 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="community"
+					name="moments"
 					options={{
-						title: "Community",
+						title: "Moments",
 						tabBarIcon: ({ color }) => (
-							<Feather name="users" size={24} color={color} />
+							<Feather name="trello" size={24} color={color} />
+						),
+					}}
+				/>
+				<Tabs.Screen
+					name="notifications"
+					options={{
+						title: "Notifications",
+						tabBarIcon: ({ color }) => (
+							<Feather name="bell" size={24} color={color} />
 						),
 					}}
 				/>
