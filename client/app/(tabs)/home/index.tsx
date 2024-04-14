@@ -19,7 +19,7 @@ const Home = () => {
 	const { user } = useUser();
 
 	return (
-		<SafeAreaView className="flex-1 bg-off-white">
+		<SafeAreaView className="flex-1 bg-[#FAF9F6]">
 			<ScrollView className="flex-1 space-y-[24px] px-5">
 				<View className="flex-row items-center justify-between mt-6">
 					<View className="flex-row gap-2">
