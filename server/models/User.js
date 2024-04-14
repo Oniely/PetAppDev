@@ -1,13 +1,20 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require("mongoose");
 
+const UserSchema = new Schema({
+	userId: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	userType: {
+		type: String,
+		enum: ["PetOwner", "ServiceProvider"],
+    default: "PetOwner",
+		required: true,
+	},
+	image_url: String,
+	phoneNumber: String,
+	address: String
+});
 
-const UserSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: [true, "userId is required from clerk"],
-    unique: [true, "userId should be unique"]
-  },
-  image_url: String
-}, { timestamps: true });
-
-module.exports = mongoose.model('User', UserSchema);
+module.exports = model("User", UserSchema);
