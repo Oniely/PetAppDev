@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import {
 	manipulateAsync,
 } from "expo-image-manipulator";
+import { router } from "expo-router";
 
 const EditProfile = () => {
 	const { user } = useUser();
@@ -43,13 +44,13 @@ const EditProfile = () => {
 				});
 			}
 
-			// if (image) {
-      //   const res = await manipulateAsync(image, [], { base64: true });
-      //   console.log(res)
-			// 	await user?.setProfileImage({ file: JSON.stringify(res) });
-			// }
+			if (image) {
+        const res = await manipulateAsync(image, [], { base64: true });
+				await user?.setProfileImage({ file: `data:image/png;base64,${res.base64}` });
+			}
 
 			user?.reload();
+			router.replace('/profile/')
 		} catch (error: any) {
       console.log(error)
 			alert(error.errors[0].message);
@@ -61,6 +62,7 @@ const EditProfile = () => {
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
@@ -81,7 +83,7 @@ const EditProfile = () => {
 								uri: image || user?.imageUrl,
 							}}
 							alt="Profile Photo"
-							className="rounded-full w-52 h-44"
+							className="rounded-full w-60 h-44"
 						/>
 						<TouchableOpacity
 							onPress={pickImage}

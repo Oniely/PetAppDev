@@ -14,7 +14,7 @@ const Profile = () => {
 						"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbfKhOuGk_Ag_8BBQ5Kc0xi1pAXxGNGP9JYQ&s",
 				}}
 				alt="Profile Photo"
-				className="w-52 h-44 rounded-full"
+				className="w-60 h-44 rounded-full"
 			/>
 			<View className="items-center">
 				<Text
