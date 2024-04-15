@@ -4,22 +4,11 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import axios from "axios";
+import { router } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithOAuth = () => {
-	const { userId, isSignedIn } = useAuth();
-
-	useEffect(() => {
-		async function DO() {
-			if (!userId) return;
-			console.log("OAuth", userId)
-			await axios.post("/auth/sign-up", { userId });
-		}
-
-		DO();
-	}, [isSignedIn])
-
 	// Warm up the android browser to improve UX
 	// https://docs.expo.dev/guides/authentication/#improving-user-experience
 	useWarmUpBrowser();
@@ -34,7 +23,6 @@ const SignInWithOAuth = () => {
 			if (createdSessionId) {
 				setActive!({ session: createdSessionId });
 			} else {
-
 			}
 		} catch (err) {
 			console.error("OAuth error", err);

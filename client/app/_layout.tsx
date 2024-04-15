@@ -97,12 +97,23 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-	const { isLoaded, isSignedIn } = useAuth();
+	const { isLoaded, isSignedIn, signOut, userId } = useAuth();
 	const segments = useSegments();
 	const router = useRouter();
 
 	useEffect(() => {
 		if (!isLoaded) return;
+
+		if (isSignedIn) {
+			axios.post("/auth/sign-up", { userId }).then((res) => {
+				const { data } = res;
+				
+				if (data.message) {
+					alert(data.message)
+					signOut();
+				}
+			});
+		}
 
 		const inTabsGroup = segments[0] === "(tabs)";
 
@@ -111,6 +122,7 @@ function RootLayoutNav() {
 		} else if (!isSignedIn) {
 			router.replace("/");
 		}
+
 	}, [isSignedIn]);
 
 	return (

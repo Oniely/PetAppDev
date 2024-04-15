@@ -1,7 +1,6 @@
 import Colors from "@/constants/Colors";
 import useRegisterStore from "@/hooks/store/register";
 import { useAuth, useSignUp } from "@clerk/clerk-expo";
-import axios from "axios";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
@@ -11,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Verify = () => {
 	const { signUp, setActive, isLoaded } = useSignUp();
-	const { userId } = useAuth();
+	const { signOut } = useAuth();
 
 	const {
 		email,
@@ -19,16 +18,6 @@ const Verify = () => {
 	const [code, setCode] = useState("");
 	const [timer, setTimer] = useState(30);
 	const [loading, setLoading] = useState(false);
-
-	useEffect(() => {
-		async function signUp() {
-			if (!userId) return;
-			console.log("SignUpScreen", userId);
-			await axios.post("/auth/sign-up", { userId });
-		}
-
-		signUp();
-	}, [signUp]);
 
 	useEffect(() => {
 			if (timer > 0) {
@@ -86,6 +75,7 @@ const Verify = () => {
 	};
 
 	const onCancelPress = () => {
+		signOut();
 		router.replace("/(auth)/(register)");
 	};
 

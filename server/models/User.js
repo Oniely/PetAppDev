@@ -23,10 +23,6 @@ const UserSchema = new Schema({
 			type: Number,
 			default: 0
 		}
-	},
-	onboarded: {
-		type: Boolean,
-		default: false
 	}
 });
 

@@ -1,30 +1,17 @@
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useSignIn, useAuth } from "@clerk/clerk-expo";
+import { useSignIn } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
 import SignInWithOAuth from "./SignInWithOAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "react-native-loading-spinner-overlay";
 
 export default function SignInScreen() {
 	const { signIn, setActive, isLoaded } = useSignIn();
-	const { userId } = useAuth();
 
 	const [emailAddress, setEmailAddress] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
-
-	// call to backend when signIn has been triggered
-	useEffect(() => {
-		async function signIn() {
-			if (!userId) return;
-			console.log("SignInScreen", userId);
-			await axios.post('/auth/sign-in', { userId });
-		}
-
-		signIn();
-	}, [signIn])
 
 	const onSignInPress = async () => {
 		if (!isLoaded) {

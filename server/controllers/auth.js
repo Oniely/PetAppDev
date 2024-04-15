@@ -16,13 +16,17 @@ const signIn = async (req, res) => {
 	console.log(`Sign In with: ${userId}`);
 
 	try {
-		const user = await PetOwner.find({ userId });
+		const user = await PetOwner.findOne({ userId });
 
 		if (user) {
 			const token = createToken(user);
 			res.cookie("token", token, { httpOnly: true })
 				.status(StatusCodes.OK)
-				.json({ onboarded: user.onboarded });
+				.json(true);
+		} else {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				message: "No user found!",
+			});
 		}
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json({
@@ -34,7 +38,13 @@ const signIn = async (req, res) => {
 const signUp = async (req, res) => {
 	const { userId } = req.body;
 
-	console.log(`Sign Up with: ${userId}`);
+	if (!userId) {
+		res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid UserId' });
+	}
+	
+	if (userId.startsWith('user_')) {
+		console.log(`Sign Up with: ${userId}`);
+	}
 
 	try {
 		const user = await PetOwner.findOneAndUpdate(
@@ -47,7 +57,7 @@ const signUp = async (req, res) => {
 			const token = createToken(user);
 			res.cookie("token", token, { httpOnly: true })
 				.status(StatusCodes.CREATED)
-				.json({ onboarded: user.onboarded });
+				.json(true);
 		}
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json(error);
