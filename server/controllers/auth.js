@@ -2,15 +2,7 @@ const { PetOwner } = require("../models/PetOwner");
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
-function createToken(user) {
-	return jwt.sign(
-		{ id: user._id, userId: user.userId },
-		process.env.JWT_SECRET,
-		{ expiresIn: process.env.JWT_EXPIRATION_TIME }
-	);
-}
-
-const signIn = async (req, res) => {
+/* const signIn = async (req, res) => {
 	const { userId } = req.body;
 
 	console.log(`Sign In with: ${userId}`);
@@ -33,7 +25,15 @@ const signIn = async (req, res) => {
 			message: "Something went wrong...",
 		});
 	}
-};
+}; */
+
+function createToken(user) {
+	return jwt.sign(
+		{ id: user._id, userId: user.userId },
+		process.env.JWT_SECRET,
+		{ expiresIn: process.env.JWT_EXPIRATION_TIME }
+	);
+}
 
 const signUp = async (req, res) => {
 	const { userId } = req.body;
@@ -43,7 +43,7 @@ const signUp = async (req, res) => {
 	}
 	
 	if (userId.startsWith('user_')) {
-		console.log(`Sign Up with: ${userId}`);
+		console.log(`SignedIn with: ${userId}`);
 	}
 
 	try {
