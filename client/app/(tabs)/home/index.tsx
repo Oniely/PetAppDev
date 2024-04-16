@@ -19,7 +19,7 @@ const Home = () => {
 	const { user } = useUser();
 
 	return (
-		<SafeAreaView className="flex-1 bg-[#FAF9F6]">
+		<SafeAreaView className="flex-1 bg-off-white">
 			<ScrollView className="flex-1 space-y-[24px] px-5">
 				<View className="flex-row items-center justify-between mt-6">
 					<View className="flex-row gap-2">
@@ -66,7 +66,7 @@ const Home = () => {
 					</TouchableOpacity>
 				</View>
 
-				<View className="h-[125px] py-5 px-5 rounded-3xl bg-white flex-row items-center space-x-4 shadow-xl">
+				<View className="h-[125px] py-5 px-5 rounded-3xl bg-white flex-row items-center space-x-4 shadow-xl mb-8">
 					<View className="flex-1 space-y-1">
 						<Text
 							style={{ fontFamily: "Poppins_600SemiBold" }}

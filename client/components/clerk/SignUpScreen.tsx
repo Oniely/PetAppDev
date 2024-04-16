@@ -58,6 +58,7 @@ export default function SignUpScreen() {
 
 			router.push("/(auth)/(register)/verify");
 		} catch (err: any) {
+			console.log(err.errors[0]);
 			alert(err.errors[0].message);
 		} finally {
 			setLoading(false);
@@ -75,14 +76,14 @@ export default function SignUpScreen() {
 							className="object-contain w-10 h-10"
 						/>
 					</View>
-					<View className="mt-6">
+					<View className="mt-14">
 						<View className="space-y-2 mb-3">
 							<View className="gap-1">
 								<Text
 									style={{
 										fontFamily: "Montserrat_600SemiBold",
 									}}
-									className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+									className="text-[45px] font-semibold text-gray-800"
 								>
 									Create New
 								</Text>
@@ -90,19 +91,19 @@ export default function SignUpScreen() {
 									style={{
 										fontFamily: "Montserrat_600SemiBold",
 									}}
-									className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+									className="text-[45px] font-semibold text-gray-800"
 								>
 									Account
 								</Text>
 							</View>
 						</View>
-						<View className="space-y-4 h-[420px]">
-							<View>
+						<View className="space-y-4">
+							<View className="space-y-1">
 								<Text
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									className="text-lg font-medium"
+									className="font-medium"
 								>
 									First Name
 								</Text>
@@ -110,18 +111,18 @@ export default function SignUpScreen() {
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									placeholder="John"
-									className="px-3 py-4 text-base border rounded-xl"
+									placeholder="Your firstname here"
+									className="px-3 py-3 border rounded-xl text-xs"
 									value={firstname}
 									onChangeText={(text) => setFirstname(text)}
 								/>
 							</View>
-							<View>
+							<View className="space-y-1">
 								<Text
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									className="text-lg font-medium"
+									className="font-medium"
 								>
 									Last Name
 								</Text>
@@ -129,18 +130,18 @@ export default function SignUpScreen() {
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									placeholder="Doe"
-									className="px-3 py-4 text-base border rounded-xl"
+									placeholder="Your lastname here"
+									className="px-3 py-3 border rounded-xl text-xs"
 									value={lastname}
 									onChangeText={(text) => setLastname(text)}
 								/>
 							</View>
-							<View>
+							<View className="space-y-1">
 								<Text
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									className="text-lg font-medium"
+									className="font-medium"
 								>
 									Email Address
 								</Text>
@@ -149,18 +150,18 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="example@gmail.com"
-									className="px-3 py-4 text-base border rounded-xl"
+									className="px-3 py-3 border rounded-xl text-xs"
 									autoCapitalize="none"
 									value={email}
 									onChangeText={(text) => setEmail(text)}
 								/>
 							</View>
-							<View>
+							<View className="space-y-1">
 								<Text
 									style={{
 										fontFamily: "OpenSans_400Regular",
 									}}
-									className="text-lg font-medium"
+									className="font-medium"
 								>
 									Password
 								</Text>
@@ -169,35 +170,29 @@ export default function SignUpScreen() {
 										fontFamily: "OpenSans_400Regular",
 									}}
 									placeholder="Your password here"
-									className="px-3 py-4 text-base border rounded-xl"
+									className="px-3 py-3 border rounded-xl text-xs"
 									autoCapitalize="none"
 									value={password}
 									secureTextEntry={true}
 									onChangeText={(text) => setPassword(text)}
 								/>
-								<Text
-									style={{
-										fontFamily: "OpenSans_400Regular",
-									}}
-									className="mt-1 text-[14px] underline"
-								/>
 							</View>
 						</View>
-						<View className="items-center">
+						<View className="items-center mt-8">
 							<TouchableOpacity
 								onPress={onSignUpPress}
 								className="items-center w-full py-4 rounded-xl bg-main-orange"
 							>
 								<Text
 									style={{ fontFamily: "OpenSans_700Bold" }}
-									className="text-lg text-neutral-100"
+									className="text-neutral-100 text-base"
 								>
 									Sign Up
 								</Text>
 							</TouchableOpacity>
 							<Text
 								style={{ fontFamily: "OpenSans_400Regular" }}
-								className="mt-2 text-sm"
+								className="mt-2 text-[12px]"
 							>
 								Already a member?{" "}
 								<Link
@@ -210,7 +205,7 @@ export default function SignUpScreen() {
 							</Text>
 						</View>
 					</View>
-					<Text className="my-5 text-sm text-center text-gray-400">
+					<Text className="my-6 text-sm text-center text-gray-400">
 						or
 					</Text>
 					<SignInWithOAuth />

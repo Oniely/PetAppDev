@@ -20,6 +20,8 @@ export default function SignInScreen() {
 
 		setLoading(true);
 
+		if (emailAddress)
+
 		try {
 			const completeSignIn = await signIn.create({
 				identifier: emailAddress,
@@ -45,42 +47,42 @@ export default function SignInScreen() {
 						className="object-contain w-10 h-10"
 					/>
 				</View>
-				<View className="mt-12 space-y-10">
+				<View className="mt-14 space-y-8">
 					<View className="space-y-2">
 						<View className="gap-1">
 							<Text
 								style={{ fontFamily: "Montserrat_600SemiBold" }}
-								className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+								className="text-[45px] font-semibold text-gray-800"
 							>
 								Hello!
 							</Text>
 							<Text
 								style={{ fontFamily: "Montserrat_600SemiBold" }}
-								className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+								className="text-[45px] font-semibold text-gray-800"
 							>
 								Welcome Back!
 							</Text>
 						</View>
 						<Text
 							style={{ fontFamily: "OpenSans_400Regular" }}
-							className="text-lg text-gray-500/80"
+							className="text-[12px] text-gray-500/80"
 						>
 							Welcome to Petoy! Get ready to pamper your furry friend
 							with our top-notch care services tailored just for them.
 						</Text>
 					</View>
 					<View className="space-y-8">
-						<View>
+						<View className="space-y-2">
 							<Text
 								style={{ fontFamily: "OpenSans_400Regular" }}
-								className="text-lg font-medium"
+								className="font-medium"
 							>
 								Email Address
 							</Text>
 							<TextInput
 								style={{ fontFamily: "OpenSans_400Regular" }}
 								placeholder="example@gmail.com"
-								className="px-3 py-4 text-base border rounded-xl"
+								className="px-3 py-3 border rounded-xl text-sm"
 								autoCapitalize="none"
 								value={emailAddress}
 								onChangeText={(emailAddress) =>
@@ -89,17 +91,17 @@ export default function SignInScreen() {
 								id="email"
 							/>
 						</View>
-						<View>
+						<View className="space-y-2">
 							<Text
 								style={{ fontFamily: "OpenSans_400Regular" }}
-								className="text-lg font-medium"
+								className="font-medium"
 							>
 								Password
 							</Text>
 							<TextInput
 								style={{ fontFamily: "OpenSans_400Regular" }}
-								placeholder="example@gmail.com"
-								className="px-3 py-4 text-base border rounded-xl"
+								placeholder="Your password here"
+								className="px-3 py-3 border rounded-xl text-sm"
 								autoCapitalize="none"
 								secureTextEntry={true}
 								value={password}
@@ -115,14 +117,14 @@ export default function SignInScreen() {
 						>
 							<Text
 								style={{ fontFamily: "OpenSans_700Bold" }}
-								className="text-lg text-neutral-100"
+								className="text-neutral-100 text-base"
 							>
 								Sign In
 							</Text>
 						</TouchableOpacity>
 						<Text
 							style={{ fontFamily: "OpenSans_400Regular" }}
-							className="mt-2 text-sm"
+							className="mt-2 text-[12px]"
 						>
 							Don't have an account yet?{" "}
 							<Link href={"/(auth)/(register)"} replace className="underline">

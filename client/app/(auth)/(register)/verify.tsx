@@ -95,13 +95,13 @@ const Verify = () => {
 							style={{
 								fontFamily: "Montserrat_600SemiBold",
 							}}
-							className="text-[50px] font-semibold text-gray-800 leading-[55px]"
+							className="text-[45px] font-semibold text-gray-800 leading-[55px]"
 						>
 							Enter Code
 						</Text>
 						<Text
 							style={{ fontFamily: "Montserrat_400Regular" }}
-							className="pl-1 text-base text-gray-500"
+							className="pl-1 text-gray-500"
 						>
 							We sen't a code to your email address:
 						</Text>
@@ -154,7 +154,7 @@ const Verify = () => {
 					<View className="justify-end flex-1 py-10 space-y-3">
 						<TouchableOpacity
 							onPress={onPressVerify}
-							className="py-5 bg-main-orange rounded-xl"
+							className="py-4 bg-main-orange rounded-xl"
 						>
 							<Text
 								style={{ fontFamily: "Poppins_600SemiBold" }}
@@ -165,7 +165,7 @@ const Verify = () => {
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={onCancelPress}
-							className="py-5 border border-dark-gray rounded-xl"
+							className="py-4 border border-dark-gray rounded-xl"
 						>
 							<Text
 								style={{ fontFamily: "Poppins_600SemiBold" }}

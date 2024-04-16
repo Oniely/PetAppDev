@@ -52,7 +52,7 @@ const tokenCache = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-axios.defaults.baseURL = "http://192.168.1.36:4000";
+axios.defaults.baseURL = "http://192.168.43.68:4000";
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
@@ -121,7 +121,7 @@ function RootLayoutNav() {
 			router.replace("/(tabs)/home/");
 		} else if (!isSignedIn) {
 			router.replace("/");
-		}
+		} 	
 
 	}, [isSignedIn]);
 
