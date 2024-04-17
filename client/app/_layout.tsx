@@ -104,12 +104,10 @@ function RootLayoutNav() {
 	useEffect(() => {
 		if (!isLoaded) return;
 
-		if (isSignedIn) {
+		if (isSignedIn && userId) {
 			axios.post("/auth/sign-up", { userId }).then((res) => {
-				const { data } = res;
-				
-				if (data.message) {
-					alert(data.message)
+				alert(res.data.message);
+				if (res.data.message) {
 					signOut();
 				}
 			});
@@ -121,8 +119,7 @@ function RootLayoutNav() {
 			router.replace("/(tabs)/home/");
 		} else if (!isSignedIn) {
 			router.replace("/");
-		} 	
-
+		}
 	}, [isSignedIn]);
 
 	return (

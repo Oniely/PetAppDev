@@ -6,6 +6,7 @@ const ServiceProviderSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	type: String,
 	description: String,
 	experienceYears: Number,
 	hourlyRate: {

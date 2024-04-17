@@ -23,7 +23,7 @@ const NavCard = ({ title, cardTitle, gotoLink, imageUrl }: Props) => {
 			>
 				{title}
 			</Text>
-			<View className="h-[150px] bg-white rounded-3xl p-5 flex-row space-x-2 mb-8">
+			<View className="h-[150px] bg-white rounded-3xl p-5 flex-row space-x-2 mb-8 shadow-xl">
 				<View className="items-start justify-between flex-1">
 					<Text
 						style={{ fontFamily: "Poppins_500Medium" }}
@@ -33,7 +33,7 @@ const NavCard = ({ title, cardTitle, gotoLink, imageUrl }: Props) => {
 						{cardTitle}
 					</Text>
 					<TouchableOpacity
-						onPress={() => router.replace(gotoLink)}
+						onPress={() => router.push(gotoLink)}
 						className="px-6 py-3 bg-main-orange/90 rounded-xl"
 					>
 						<Text

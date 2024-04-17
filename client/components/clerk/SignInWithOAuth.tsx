@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as WebBrowser from "expo-web-browser";
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import { useAuth, useOAuth } from "@clerk/clerk-expo";
+import { Image, Text, TouchableOpacity } from "react-native";
+import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-import axios from "axios";
 import { router } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -23,7 +22,6 @@ const SignInWithOAuth = () => {
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
         router.push("/(tabs)/home/");
-      } else { 1
       }
     } catch (err) {
       console.error("OAuth error", err);

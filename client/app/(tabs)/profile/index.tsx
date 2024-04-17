@@ -1,14 +1,15 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import ProfileMenu from "@/components/profile/ProfileMenu";
 import Profile from "@/components/profile/Profile";
-import { Stack } from "expo-router";
 
 const ProfileScreen = () => {
 	return (
-		<View className="flex-1 bg-main-orange">
-			<Profile />
-			<ProfileMenu />
-		</View>
+		<ScrollView className="flex-1 bg-white"> 
+			<View className="flex-1 bg-main-orange">
+				<Profile />
+				<ProfileMenu />
+			</View>
+		</ScrollView>
 	);
 };
 

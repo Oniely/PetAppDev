@@ -10,7 +10,7 @@ const ProfileMenu = () => {
 	const { signOut } = useAuth();
 
 	return (
-		<View className="px-6 py-6 flex-1 bg-white rounded-t-3xl">
+		<View className="flex-1 w-full px-6 py-6 bg-white rounded-t-3xl">
 			<ProfileMenuItem
 				link="/notification"
 				title="Notification"
@@ -41,8 +41,8 @@ const ProfileMenu = () => {
 				}}
 				className="flex-row items-center py-3"
 			>
-				<View className="flex-1 flex-row items-center gap-4">
-					<View className="bg-light-orange/60 w-12 h-12 items-center justify-center rounded-full">
+				<View className="flex-row items-center flex-1 gap-4">
+					<View className="items-center justify-center w-12 h-12 rounded-full bg-light-orange/60">
 						<Feather
 							name="log-out"
 							size={20}
