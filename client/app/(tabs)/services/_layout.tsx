@@ -35,6 +35,10 @@ const ServicesLayout = () => {
 			}}
 		>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
+			<Stack.Screen
+				name="service"
+				options={{ headerShown: true, title: "Services" }}
+			/>
 		</Stack>
 	);
 };

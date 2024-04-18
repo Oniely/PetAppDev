@@ -23,7 +23,7 @@ const NavCard = ({ title, cardTitle, gotoLink, imageUrl }: Props) => {
 			>
 				{title}
 			</Text>
-			<View className="h-[150px] bg-white rounded-3xl p-5 flex-row space-x-2 mb-8 shadow-xl">
+			<View className="h-[150px] bg-white rounded-3xl p-5 flex-row space-x-2 mb-8 shadow-2xl">
 				<View className="items-start justify-between flex-1">
 					<Text
 						style={{ fontFamily: "Poppins_500Medium" }}

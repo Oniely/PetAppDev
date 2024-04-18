@@ -7,7 +7,7 @@ const ServiceCard = () => {;
 	return (
 		<Link href={'/services/service'} asChild>
 			<Pressable className="mb-8">
-				<View className="bg-white first-letter py-4 px-5 flex-row space-x-5 rounded-3xl">
+				<View className="bg-white first-letter py-4 px-5 flex-row space-x-5 rounded-3xl shadow-2xl">
 					<Image
 						source={require("@/assets/images/dogo_care.jpg")}
 						className="w-[100px] h-[100px] rounded-xl"

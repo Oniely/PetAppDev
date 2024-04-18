@@ -5,18 +5,13 @@ import {
 	Image,
 	SafeAreaView,
 } from "react-native";
-import { Redirect, router } from 'expo-router';
-import { Feather } from '@expo/vector-icons'
+import { router } from "expo-router";
+import { Feather } from "@expo/vector-icons";
 import React from "react";
-import { useAuth } from '@clerk/clerk-expo';
-
+import { useAuth } from "@clerk/clerk-expo";
 
 const Onboarding = () => {
-	const { isLoaded, isSignedIn } = useAuth();
-
-	if (isLoaded && isSignedIn) {
-		<Redirect href={'/(tabs)/home/'} />
-	}
+	const { isSignedIn } = useAuth();
 
 	return (
 		<SafeAreaView className="h-full px-4 bg-orange-white">
@@ -26,7 +21,7 @@ const Onboarding = () => {
 					className="object-contain w-10 h-10"
 				/>
 				<TouchableOpacity
-					onPress={() => router.push("/(auth)/login")}
+					onPress={() => () => !isSignedIn ? router.push("/(auth)/login") : router.replace('./(tabs)/home/')}
 					className="bg-main-orange items-center justify-center rounded-full w-10 h-10"
 				>
 					<Feather name="arrow-right" size={24} color="#FFF5E9" />
@@ -69,13 +64,13 @@ const Onboarding = () => {
 					</View>
 				</View>
 				<TouchableOpacity
-					onPress={() => router.push("/(auth)/login")}
+					onPress={() => !isSignedIn ? router.push("/(auth)/login") : router.replace('./(tabs)/home/')}
 					className="items-center py-4 mt-6 rounded-full bg-main-orange"
 				>
 					<Text
 						style={{ fontFamily: "Poppins_600SemiBold" }}
 						className="text-lg text-orange-white"
-					>
+						>
 						Get Started
 					</Text>
 				</TouchableOpacity>

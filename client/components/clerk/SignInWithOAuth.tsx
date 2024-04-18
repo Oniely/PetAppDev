@@ -3,7 +3,6 @@ import * as WebBrowser from "expo-web-browser";
 import { Image, Text, TouchableOpacity } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-import { router } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,7 +20,6 @@ const SignInWithOAuth = () => {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        router.push("/(tabs)/home/");
       }
     } catch (err) {
       console.error("OAuth error", err);
@@ -39,7 +37,7 @@ const SignInWithOAuth = () => {
       />
       <Text
         style={{ fontFamily: "OpenSans_400Regular" }}
-        className="text-center text-xs"
+        className="text-center"
       >
         Sign in with Google
       </Text>

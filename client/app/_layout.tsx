@@ -31,28 +31,10 @@ export {
 } from "expo-router";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-const tokenCache = {
-	async getToken(key: string) {
-		try {
-			return SecureStore.getItemAsync(key);
-		} catch (err) {
-			return null;
-		}
-	},
-	async saveToken(key: string, value: string) {
-		try {
-			return SecureStore.setItemAsync(key, value);
-		} catch (err) {
-			return;
-		}
-	},
-};
+axios.defaults.baseURL = "http://192.168.43.68:4000";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-axios.defaults.baseURL = "http://192.168.43.68:4000";
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
@@ -71,7 +53,23 @@ export default function RootLayout() {
 		OpenSans_700Bold,
 	});
 
-	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
+	const tokenCache = {
+		async getToken(key: string) {
+			try {
+				return SecureStore.getItemAsync(key);
+			} catch (err) {
+				return null;
+			}
+		},
+		async saveToken(key: string, value: string) {
+			try {
+				return SecureStore.setItemAsync(key, value);
+			} catch (err) {
+				return;
+			}
+		},
+	};
+
 	useEffect(() => {
 		if (error) throw error;
 	}, [error]);
@@ -101,24 +99,27 @@ function RootLayoutNav() {
 	const segments = useSegments();
 	const router = useRouter();
 
+	// useEffect(() => {
+	// 	if (isSignedIn && userId) {
+	// 		axios.post("/auth/sign-up", { userId }).then((res) => {
+	// 			alert(res.data.message);
+	// 			if (res.data.message) {
+	// 				signOut();
+	// 			}
+	// 		});
+	// 	}
+	// }, [])
+
 	useEffect(() => {
 		if (!isLoaded) return;
 
-		if (isSignedIn && userId) {
-			axios.post("/auth/sign-up", { userId }).then((res) => {
-				alert(res.data.message);
-				if (res.data.message) {
-					signOut();
-				}
-			});
-		}
-
 		const inTabsGroup = segments[0] === "(tabs)";
+		
+		console.log(`User changed: ${isSignedIn}`);
+		console.log(segments);	
 
 		if (isSignedIn && !inTabsGroup) {
-			router.replace("/(tabs)/home/");
-		} else if (!isSignedIn) {
-			router.replace("/");
+			router.replace("/home/");
 		}
 	}, [isSignedIn]);
 
@@ -130,7 +131,6 @@ function RootLayoutNav() {
 				animationTypeForReplace: "pop",
 			}}
 		>
-			<Stack.Screen name="index" />
 			<Stack.Screen name="(auth)" />
 			<Stack.Screen name="(tabs)" />
 		</Stack>
