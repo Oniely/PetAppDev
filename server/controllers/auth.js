@@ -60,7 +60,7 @@ const signUp = async (req, res) => {
 				.json(true);
 		}
 	} catch (error) {
-		res.status(StatusCodes.BAD_REQUEST).json(error);
+		res.status(StatusCodes.BAD_REQUEST).json({ message: "Registering went wrong", error });
 	}
 };
 

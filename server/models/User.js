@@ -9,7 +9,7 @@ const UserSchema = new Schema({
 	userType: {
 		type: String,
 		enum: ["PetOwner", "ServiceProvider"],
-    default: "PetOwner",
+		default: "PetOwner",
 		required: true,
 	},
 	image_url: String,
@@ -17,13 +17,13 @@ const UserSchema = new Schema({
 	address: {
 		lat: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		long: {
 			type: Number,
-			default: 0
-		}
-	}
+			default: 0,
+		},
+	},
 });
 
 module.exports = model("User", UserSchema);

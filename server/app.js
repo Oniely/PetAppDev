@@ -1,6 +1,7 @@
 require("dotenv").config();
 
-const express = require("express");``
+const express = require("express");
+``;
 const app = express();
 
 // db connection
@@ -14,8 +15,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use('/', require('./routes/index'));
-app.use('/auth', require('./routes/auth'));
+app.use("/", require("./routes/index"));
+app.use("/auth", require("./routes/auth"));
+app.use("/service", require("./routes/service"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, async () => {
