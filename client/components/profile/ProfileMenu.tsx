@@ -4,7 +4,6 @@ import Colors from "@/constants/Colors";
 import { useAuth } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
-import axios from "axios";
 
 const ProfileMenu = () => {
 	const { signOut } = useAuth();
@@ -12,7 +11,7 @@ const ProfileMenu = () => {
 	return (
 		<View className="flex-1 w-full px-6 py-6 bg-white rounded-t-3xl">
 			<ProfileMenuItem
-				link="/notification"
+				link="/(tabs)/notifications"
 				title="Notification"
 				icon={
 					<Feather
@@ -23,22 +22,19 @@ const ProfileMenu = () => {
 				}
 			/>
 			<ProfileMenuItem
-				link="/pets"
+				link="/home"
 				title="Your Pets"
 				icon={<MaterialIcons name="catching-pokemon" size={20} color={Colors["dark-gray"]} />}
 			/>
 			<ProfileMenuItem
-				link="/appointments"
+				link="/home"
 				title="Appointment History"
 				icon={<Feather name="clock" size={20} color={Colors["dark-gray"]} />}
 			/>
 
 			{/* LOGOUT  */}
 			<TouchableOpacity
-				onPress={async () => {
-					signOut();
-					await axios.post('/auth/logout');
-				}}
+				onPress={() => signOut()}
 				className="flex-row items-center py-3"
 			>
 				<View className="flex-row items-center flex-1 gap-4">

@@ -1,9 +1,9 @@
 import * as SplashScreen from "expo-splash-screen";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack, usePathname, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 
-import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { ClerkProvider, useAuth, useUser } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 
 import {
@@ -31,7 +31,7 @@ export {
 } from "expo-router";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-axios.defaults.baseURL = "http://192.168.43.68:4000";
+axios.defaults.baseURL = "http://192.168.1.36:4000";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -96,19 +96,10 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const { isLoaded, isSignedIn, signOut, userId } = useAuth();
+	const { user } = useUser();
 	const segments = useSegments();
 	const router = useRouter();
-
-	// useEffect(() => {
-	// 	if (isSignedIn && userId) {
-	// 		axios.post("/auth/sign-up", { userId }).then((res) => {
-	// 			alert(res.data.message);
-	// 			if (res.data.message) {
-	// 				signOut();
-	// 			}
-	// 		});
-	// 	}
-	// }, [])
+	const pathname = usePathname();
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -116,10 +107,23 @@ function RootLayoutNav() {
 		const inTabsGroup = segments[0] === "(tabs)";
 		
 		console.log(`User changed: ${isSignedIn}`);
-		console.log(segments);	
+		console.log(`Current path: ${pathname}`);
+		console.log(segments);
 
 		if (isSignedIn && !inTabsGroup) {
+			console.log("Registering");
+			axios
+				.post("/auth/sign-up", { userId, image_url: user?.imageUrl })
+				.then((res) => {
+					if (res.data.message) {
+						console.log(`Error in registering, Logging out!`);
+						signOut();
+					}
+				});
+
 			router.replace("/home/");
+		} else if (!isSignedIn) {
+			router.replace("/(auth)/");
 		}
 	}, [isSignedIn]);
 

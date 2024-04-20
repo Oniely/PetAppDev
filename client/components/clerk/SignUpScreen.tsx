@@ -21,6 +21,7 @@ export default function SignUpScreen() {
 		lastname,
 		email,
 		password,
+		
 		setFirstname,
 		setLastname,
 		setEmail,
@@ -55,6 +56,11 @@ export default function SignUpScreen() {
 			await signUp.prepareEmailAddressVerification({
 				strategy: "email_code",
 			});
+
+			setFirstname("");
+			setLastname("");
+			setEmail("");
+			setPassword("");
 
 			router.push("/(auth)/(register)/verify");
 		} catch (err: any) {

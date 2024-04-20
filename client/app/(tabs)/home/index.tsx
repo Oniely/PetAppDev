@@ -55,7 +55,7 @@ const Home = () => {
 						title="Community"
 						cardTitle="Connect and share with communities!"
 						imageUrl={require("@/assets/images/dogo_care.jpg")}
-						gotoLink="../community"
+						gotoLink="../moments"
 					/>
 				</View>
 			</ScrollView>

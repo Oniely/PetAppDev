@@ -12,10 +12,9 @@ import {
 import Spinner from "react-native-loading-spinner-overlay";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import {
-	manipulateAsync,
-} from "expo-image-manipulator";
+import { manipulateAsync } from "expo-image-manipulator";
 import { router } from "expo-router";
+import axios from "axios";
 
 const EditProfile = () => {
 	const { user } = useUser();
@@ -45,14 +44,25 @@ const EditProfile = () => {
 			}
 
 			if (image) {
-        const res = await manipulateAsync(image, [], { base64: true });
-				await user?.setProfileImage({ file: `data:image/png;base64,${res.base64}` });
+				const res = await manipulateAsync(image, [], { base64: true });
+				await user
+					?.setProfileImage({
+						file: `data:image/png;base64,${res.base64}`,
+					})
+					.then(async (res) => {
+						await axios.post("/profile/update_photo", {
+							userId: user.id,
+							image_url: image,
+						});
+					}).catch((err) => {
+						alert(err);
+					});
 			}
 
 			user?.reload();
-			router.replace('/profile/')
+			router.replace("/profile/");
 		} catch (error: any) {
-      console.log(error)
+			console.log(error);
 			alert(error.errors[0].message);
 		} finally {
 			setLoading(false);
@@ -61,11 +71,11 @@ const EditProfile = () => {
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+			aspect: [4, 3],
+			quality: 1,
+		});
 
 		if (!result.canceled) {
 			setImage(result.assets[0].uri);

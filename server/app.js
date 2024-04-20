@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
 app.use("/service", require("./routes/service"));
+app.use("/profile", require("./routes/profile"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, async () => {

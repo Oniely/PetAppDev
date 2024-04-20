@@ -2,6 +2,8 @@ const { Schema, model } = require("mongoose");
 const User = require("./User");
 
 const PetOwnerSchema = new Schema({
+	fname: String,
+	lname: String,
 	pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
 });
 
