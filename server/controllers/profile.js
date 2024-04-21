@@ -1,18 +1,28 @@
 const { PetOwner } = require("../models/PetOwner");
 const { StatusCodes } = require("http-status-codes");
 
-const updateUserImage = async (req, res) => {
-	const { userId, image_url } = req.body;
+const updateUser = async (req, res) => {
+	const { userId, fname, lname, image_url } = req.body;
 
-	if (!userId) {
-		console.log("Error on userId")
+	let updateObject = {
+		fname,
+		lname
+	};
+
+	if (userId.startsWith("user_")) {
+		console.log(`Updating Profile Photo of: ${userId}`);
+	} else {
 		res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid userId" });
 	}
 
+	if (image_url !== "") {
+		updateObject.image_url = image_url;
+	}
+
 	try {
-		const user = await PetOwner.findOneAndUpdate(
-			{ userId: userData.userId },
-			{ image_url },
+		await PetOwner.findOneAndUpdate(
+			{ userId },
+			{ $set: updateObject },
 			{ upsert: true, new: true }
 		);
 
@@ -25,5 +35,5 @@ const updateUserImage = async (req, res) => {
 };
 
 module.exports = {
-	updateUserImage,
+	updateUser,
 };

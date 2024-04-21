@@ -1,5 +1,5 @@
 import * as SplashScreen from "expo-splash-screen";
-import { Stack, usePathname, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 
@@ -99,21 +99,24 @@ function RootLayoutNav() {
 	const { user } = useUser();
 	const segments = useSegments();
 	const router = useRouter();
-	const pathname = usePathname();
 
 	useEffect(() => {
 		if (!isLoaded) return;
 
 		const inTabsGroup = segments[0] === "(tabs)";
-		
+
 		console.log(`User changed: ${isSignedIn}`);
-		console.log(`Current path: ${pathname}`);
 		console.log(segments);
 
 		if (isSignedIn && !inTabsGroup) {
 			console.log("Registering");
 			axios
-				.post("/auth/sign-up", { userId, image_url: user?.imageUrl })
+				.post("/auth/sign-up", {
+					userId,
+					fname: user?.firstName,
+					lname: user?.lastName,
+					image_url: user?.imageUrl,
+				})
 				.then((res) => {
 					if (res.data.message) {
 						console.log(`Error in registering, Logging out!`);

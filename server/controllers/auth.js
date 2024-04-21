@@ -35,11 +35,7 @@ const { StatusCodes } = require("http-status-codes");
 } */
 
 const signUp = async (req, res) => {
-	const { userId, image_url } = req.body;
-
-	if (!userId) {
-		res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid userId" });
-	}
+	const { userId, fname, lname, image_url } = req.body;
 
 	if (userId.startsWith("user_")) {
 		console.log(`SignedIn with: ${userId}`);
@@ -48,9 +44,14 @@ const signUp = async (req, res) => {
 	}
 
 	try {
-		const user = await PetOwner.findOneAndUpdate(
+		await PetOwner.findOneAndUpdate(
 			{ userId },
-			{ userId, image_url },
+			{
+				userId,
+				image_url,
+				fname,
+				lname,
+			},
 			{ upsert: true, new: true }
 		);
 
@@ -59,7 +60,7 @@ const signUp = async (req, res) => {
 		} else {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				message: "User not found",
-			});	
+			});
 		}
 	} catch (error) {
 		res.status(StatusCodes.BAD_REQUEST).json({

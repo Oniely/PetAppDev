@@ -1,7 +1,7 @@
 const express = require("express");
-const { updateUserImage } = require("../controllers/profile");
+const { updateUser } = require("../controllers/profile");
 const router = express.Router();
 
-router.route("/update_photo").post(updateUserImage);
+router.route("/update_user").post(updateUser);
 
 module.exports = router;

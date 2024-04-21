@@ -29,7 +29,7 @@ const EditProfile = () => {
 		setLoading(true);
 
 		try {
-			if (firstName && lastName) {
+			if (firstName !== user?.firstName || lastName !== user?.lastName) {
 				await user?.update({
 					firstName: firstName!,
 					lastName: lastName!,
@@ -45,18 +45,19 @@ const EditProfile = () => {
 
 			if (image) {
 				const res = await manipulateAsync(image, [], { base64: true });
-				await user
-					?.setProfileImage({
-						file: `data:image/png;base64,${res.base64}`,
-					})
-					.then(async (res) => {
-						await axios.post("/profile/update_photo", {
-							userId: user.id,
-							image_url: image,
-						});
-					}).catch((err) => {
-						alert(err);
-					});
+				await user?.setProfileImage({
+					file: `data:image/png;base64,${res.base64}`,
+				});
+			}
+
+			const { data } = await axios.post("/profile/update_user", {
+				userId: user?.id,
+				fname: firstName,
+				lname: lastName,
+				image_url: image,
+			});
+			if (data.message) {
+				alert(data.message);
 			}
 
 			user?.reload();
