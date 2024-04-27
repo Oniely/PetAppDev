@@ -1,7 +1,10 @@
-const Page = () => {
-   return (
-     <div>Page</div>
-   )
-}
+const Services = () => {
+	return (
+		<>
+			<h1 className="head-text">Services</h1>
+			<section>Services</section>
+		</>
+	);
+};
 
-export default Page
+export default Services;

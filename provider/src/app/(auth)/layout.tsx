@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Outfit } from "next/font/google";
 import "../globals.css";
 import Image from "next/image";
+import { dark, neobrutalism, shadesOfPurple } from "@clerk/themes";
 
 const font = Outfit({ subsets: ["latin"] });
 
@@ -16,11 +17,15 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
+		<ClerkProvider appearance={{
+			variables: {
+				colorPrimary: '#f59245'
+			}
+		}}>
 			<html lang="en">
 				<body className={font.className}>
-					<main className="w-full h-screen flex items-center justify-center bg-main-orange">
-						<header className="w-full max-w-3xl h-14 mx-auto fixed top-0 flex items-center justify-between px-2">
+					<main className="w-full h-screen flexCenter bg-main-orange">
+						<header className="fixed top-0 flex items-center justify-between w-full max-w-3xl px-2 mx-auto h-14">
 							<Image src='/images/logo.png' alt="logo" width={35} height={35} />
 							{/* prettier-ignore */}
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="#1e1e1e" className="w-8 h-8">
