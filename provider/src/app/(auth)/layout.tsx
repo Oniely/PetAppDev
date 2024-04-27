@@ -2,7 +2,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Outfit } from "next/font/google";
 import "../globals.css";
 import Image from "next/image";
-import { dark, neobrutalism, shadesOfPurple } from "@clerk/themes";
 
 const font = Outfit({ subsets: ["latin"] });
 

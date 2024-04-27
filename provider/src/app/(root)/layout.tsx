@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "../globals.css";
-import LeftSideBar from "@/components/LeftSideBar";
 import { ClerkProvider } from "@clerk/nextjs";
-import TopBar from "@/components/TopBar";
+import TopBar from "@/components/shared/TopBar";
+import LeftSideBar from "@/components/shared/LeftSideBar";
+import BottomBar from "@/components/shared/BottomBar";
 
 const font = Outfit({ subsets: ["latin"] });
 
@@ -32,7 +33,7 @@ export default function RootLayout({
 							{children}
 						</section>
 					</main>
-					{/* <Bottombar /> */}
+					<BottomBar />
 				</body>
 			</html>
 		</ClerkProvider>
