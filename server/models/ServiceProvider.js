@@ -1,7 +1,30 @@
 const { Schema, model } = require("mongoose");
-const User = require("./User");
 
 const ServiceProviderSchema = new Schema({
+	userId: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	userType: {
+		type: String,
+		enum: ["PetOwner", "ServiceProvider"],
+		default: "PetOwner",
+		required: true,
+	},
+	image_url: String,
+	phoneNumber: String,
+	address: {
+		lat: {
+			type: Number,
+			default: 0,
+		},
+		long: {
+			type: Number,
+			default: 0,
+		},
+	},
+
 	companyName: {
 		type: String,
 		required: true,
@@ -32,10 +55,7 @@ const ServiceSchema = new Schema({
 	price: { type: Number, require: true },
 });
 
-const ServiceProvider = User.discriminator(
-	"ServiceProvider",
-	ServiceProviderSchema
-);
+const ServiceProvider = model("ServiceProvider", ServiceProviderSchema);
 const Service = model("Service", ServiceSchema);
 
 module.exports = { ServiceProvider, Service };
