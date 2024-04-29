@@ -17,6 +17,7 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { UploadButton } from "@/utils/uploadthing";
+import { ClientUploadedFileData } from "uploadthing/types";
 
 interface Props {
 	user?: {
@@ -40,8 +41,8 @@ const AccountProfile = ({ user }: Props) => {
 			companyName: "",
 			typeOfService: "",
 			bio: "",
-			experienceYears: 0,
-			hourlyRate: 0,
+			experienceYears: "",
+			hourlyRate: "",
 		},
 	});
 
@@ -53,7 +54,7 @@ const AccountProfile = ({ user }: Props) => {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="flex flex-1 flex-col justify-start gap-6"
+				className="flex flex-1 flex-col justify-start gap-8"
 			>
 				<FormField
 					control={form.control}
@@ -65,14 +66,13 @@ const AccountProfile = ({ user }: Props) => {
 								<div className="w-full h-full border">
 									<UploadButton
 										endpoint="media"
-										onClientUploadComplete={(res) => {
-											console.log(res);	
+										onClientUploadComplete={(res: ClientUploadedFileData) => {
+											console.log(res.url);
 										}}
-										onUploadError={(err: Error) => {
+										onUploadError={(err: any) => {
 											console.log(
 												`Uploadthing Error: ${err}`
 											);
-
 											alert(err.message);
 										}}
 									/>
@@ -124,8 +124,40 @@ const AccountProfile = ({ user }: Props) => {
 							</FormLabel>
 							<FormControl>
 								<Input {...field} />
-							<FormMessage />
 							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="experienceYears"
+					render={({ field }) => (
+						<FormItem className="flex flex-col gap-3 w-full">
+							<FormLabel>
+								Experience Years{" - "}
+								<span className="text-dark-gray/70 font-light">{"(*In years, just use 1 if less than a year)"}</span>
+							</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="hourlyRate"
+					render={({ field }) => (
+						<FormItem className="flex flex-col gap-3 w-full">
+							<FormLabel>
+								Hourly Rate{" - "}
+								<span className="text-dark-gray/70 font-light">{"(*Add a general/average you'll have for your services )"}</span>
+							</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>

@@ -39,6 +39,10 @@ const ServiceProviderSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	onboarded: {
+		type: Boolean,
+		default: false
+	},
 	servicesOffered: [{ type: Schema.Types.ObjectId, ref: "Service" }],
 	ratings: [{ rating: Number, comment: String }],
 });
