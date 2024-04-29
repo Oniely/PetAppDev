@@ -23,8 +23,8 @@ export default function RootLayout({
 		}}>
 			<html lang="en">
 				<body className={font.className}>
-					<main className="w-full h-screen flexCenter bg-main-orange">
-						<header className="fixed top-0 flex items-center justify-between w-full max-w-3xl px-2 mx-auto h-14">
+					<main className="w-full min-h-screen flexCenter bg-main-orange">
+						<header className="absolute top-0 flex items-center justify-between w-full max-w-3xl px-2 mx-auto h-14">
 							<Image src='/images/logo.png' alt="logo" width={35} height={35} />
 							{/* prettier-ignore */}
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="#1e1e1e" className="w-8 h-8">

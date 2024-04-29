@@ -29,8 +29,11 @@ const ServiceProviderSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	type: String,
-	description: String,
+	typeOfService: {
+		type: String,
+		required: true
+	},
+	bio: String,
 	experienceYears: Number,
 	hourlyRate: {
 		type: Number,
