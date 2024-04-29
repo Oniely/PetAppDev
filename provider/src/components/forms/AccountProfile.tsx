@@ -66,7 +66,7 @@ const AccountProfile = ({ user }: Props) => {
 									<UploadButton
 										endpoint="media"
 										onClientUploadComplete={(res) => {
-											setUrl(res);
+											console.log(res);	
 										}}
 										onUploadError={(err: Error) => {
 											console.log(
