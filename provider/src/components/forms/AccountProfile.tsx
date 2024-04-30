@@ -17,7 +17,6 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { UploadButton } from "@/utils/uploadthing";
-import { ClientUploadedFileData } from "uploadthing/types";
 
 interface Props {
 	user?: {
@@ -41,8 +40,8 @@ const AccountProfile = ({ user }: Props) => {
 			companyName: "",
 			typeOfService: "",
 			bio: "",
-			experienceYears: "",
-			hourlyRate: "",
+			experienceYears: 1,
+			hourlyRate: 1,
 		},
 	});
 
@@ -66,8 +65,9 @@ const AccountProfile = ({ user }: Props) => {
 								<div className="w-full h-full border">
 									<UploadButton
 										endpoint="media"
-										onClientUploadComplete={(res: ClientUploadedFileData) => {
-											console.log(res.url);
+										onClientUploadComplete={(res) => {
+											console.log(res);
+											setUrl(res.fileUrl)
 										}}
 										onUploadError={(err: any) => {
 											console.log(
