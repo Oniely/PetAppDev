@@ -31,7 +31,7 @@ export {
 } from "expo-router";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-axios.defaults.baseURL = "http://192.168.1.36:4000";
+axios.defaults.baseURL = "http://192.168.151.38:4000";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -126,7 +126,7 @@ function RootLayoutNav() {
 
 			router.replace("/home/");
 		} else if (!isSignedIn) {
-			router.replace("/(auth)/");
+			router.replace("/(auth)/onboarding");
 		}
 	}, [isSignedIn]);
 

@@ -29,7 +29,7 @@ const ServiceProviderSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	typeOfService: {
+	typeOfProvider: {
 		type: String,
 		required: true
 	},
