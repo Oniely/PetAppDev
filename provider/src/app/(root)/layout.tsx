@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "../globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import TopBar from "@/components/shared/TopBar";
 import LeftSideBar from "@/components/shared/LeftSideBar";
 import BottomBar from "@/components/shared/BottomBar";
+import Providers from "@/lib/contexts/Providers";
 
 const font = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Pet Care Services Application",
-	description: "Next.js Application PWA's",
+	description: "Next.js Application",
 };
 
 export default function RootLayout({
@@ -19,11 +19,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<ClerkProvider appearance={{
-			variables: {
-				colorPrimary: '#f59245'
-			}
-		}}>
+		<Providers>
 			<html lang="en">
 				<body className={font.className}>
 					<TopBar />
@@ -36,6 +32,6 @@ export default function RootLayout({
 					<BottomBar />
 				</body>
 			</html>
-		</ClerkProvider>
+		</Providers>
 	);
 }

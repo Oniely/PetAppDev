@@ -15,38 +15,94 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { UploadButton } from "@/utils/uploadthing";
+import { ChangeEvent, useState } from "react";
+import { useUploadThing } from "@/utils/uploadthing";
+import { upsertUser } from "@/lib/actions/user.action";
+import { redirect, usePathname } from "next/navigation";
+import { useOnboarded } from "@/lib/store/OnboardStore";
 
 interface Props {
-	user?: {
-		id: string;
-		objectId: string;
-		username: string;
-		name: string;
+	user: {
+		userId: string;
+		image_url: string;
+		companyName: string;
+		typeOfProvider: string;
+		phoneNumber: string;
+		experienceYears: string;
+		hourlyRate: string;
 		bio: string;
-		image: string;
+		onboarded: boolean;
 	};
 }
 
 const AccountProfile = ({ user }: Props) => {
-	const [url, setUrl] = useState("");
+	const [files, setFiles] = useState<File[]>([]);
+	const { startUpload } = useUploadThing('media');
+	const { setOnboarded } = useOnboarded();
+
+	if (user?.onboarded) {
+		setOnboarded(user.onboarded);
+	}
+
+	const pathname = usePathname();
 
 	const form = useForm({
 		resolver: zodResolver(UserValidation),
 		defaultValues: {
-			image_url: url || user?.image || "",
+			image_url: user?.image_url || "",
 			phoneNumber: "",
 			companyName: "",
-			typeOfService: "",
+			typeOfProvider: "",
 			bio: "",
-			experienceYears: 1,
-			hourlyRate: 1,
+			experienceYears: "",
+			hourlyRate: "",
 		},
 	});
 
+	function handleImage(e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) {
+		e.preventDefault();
+
+		const fileReader = new FileReader();
+
+		if (e.target.files && e.target.files.length > 0) {
+			const file = e.target.files[0];
+
+			setFiles(Array.from(e.target.files))
+
+			if (!file.type.includes('image')) return;
+
+			fileReader.onload = async (e) => {
+				const imageDataUrl = e.target?.result?.toString() || "";
+
+				fieldChange(imageDataUrl!);
+			}
+			fileReader.readAsDataURL(file);
+		}
+	}
+
 	async function onSubmit(values: z.infer<typeof UserValidation>) {
 		console.log(values);
+
+		const imgRes = await startUpload(files);
+
+		if (imgRes) {
+			values.image_url = imgRes[0].url
+			console.log(imgRes[0].url);
+		}
+
+		await upsertUser({
+			userId: user.userId,
+			image_url: values.image_url,
+			companyName: values.companyName,
+			typeOfProvider: values.typeOfProvider,
+			phoneNumber: values.phoneNumber,
+			experienceYears: parseInt(values.experienceYears),
+			hourlyRate: parseInt(values.hourlyRate),
+			bio: values.bio,
+			onboarded: true,
+			path: pathname
+		})
+		setOnboarded(true);
 	}
 
 	return (
@@ -62,34 +118,7 @@ const AccountProfile = ({ user }: Props) => {
 						<FormItem className="flex flex-col gap-3 w-full">
 							<FormLabel>Profile Image</FormLabel>
 							<FormControl>
-								<div className="w-full h-full border">
-									<UploadButton
-										endpoint="media"
-										onClientUploadComplete={(res) => {
-											console.log(res);
-											setUrl(res.fileUrl)
-										}}
-										onUploadError={(err: any) => {
-											console.log(
-												`Uploadthing Error: ${err}`
-											);
-											alert(err.message);
-										}}
-									/>
-								</div>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="phoneNumber"
-					render={({ field }) => (
-						<FormItem className="flex flex-col gap-3 w-full">
-							<FormLabel>Contact Number</FormLabel>
-							<FormControl>
-								<Input {...field} />
+								<Input type="file" accept="image/*" placeholder="Add profile photo" onChange={(e) => handleImage(e, field.onChange)} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -115,13 +144,26 @@ const AccountProfile = ({ user }: Props) => {
 				/>
 				<FormField
 					control={form.control}
-					name="typeOfService"
+					name="typeOfProvider"
 					render={({ field }) => (
 						<FormItem className="flex flex-col gap-3 w-full">
 							<FormLabel>
 								Type of Service{" - "}
 								<span className="text-dark-gray/70 font-light">{"(*Veterinary, Onboarder, etc.)"}</span>
 							</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="phoneNumber"
+					render={({ field }) => (
+						<FormItem className="flex flex-col gap-3 w-full">
+							<FormLabel>Contact Number</FormLabel>
 							<FormControl>
 								<Input {...field} />
 							</FormControl>
@@ -139,7 +181,7 @@ const AccountProfile = ({ user }: Props) => {
 								<span className="text-dark-gray/70 font-light">{"(*In years, just use 1 if less than a year)"}</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} />
+								<Input type="number" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -155,7 +197,10 @@ const AccountProfile = ({ user }: Props) => {
 								<span className="text-dark-gray/70 font-light">{"(*Add a general/average you'll have for your services )"}</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} />
+								<div className="flex items-center gap-2 relative">
+									<span className="absolute left-2 text-sm font-light">₱</span>
+									<Input type="number" className="pl-6" {...field} datatype="number" />
+								</div>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

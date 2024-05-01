@@ -1,6 +1,6 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose from "mongoose";
 
-const ServiceProviderSchema = new Schema({
+const ServiceProviderSchema = new mongoose.Schema({
 	userId: {
 		type: String,
 		required: true,
@@ -32,12 +32,12 @@ const ServiceProviderSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
-	servicesOffered: [{ type: Schema.Types.ObjectId, ref: "Service" }],
+	servicesOffered: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
 	ratings: [{ rating: Number, comment: String }],
 });
 
-const ServiceSchema = new Schema({
-	provider: { type: Schema.Types.ObjectId, ref: "ServiceProvider" },
+const ServiceSchema = new mongoose.Schema({
+	provider: { type: mongoose.Schema.Types.ObjectId, ref: "ServiceProvider" },
 	serviceName: {
 		type: String,
 		required: true,
@@ -51,5 +51,5 @@ const ServiceSchema = new Schema({
 	price: { type: Number, require: true },
 });
 
-export const Provider = models.Provider || model("Provider", ServiceProviderSchema);
-export const Service = models.Service || model("Service", ServiceSchema);
+export const Provider = mongoose.models.Provider || mongoose.model("Provider", ServiceProviderSchema);
+export const Service = mongoose.models.Service || mongoose.model("Service", ServiceSchema);
