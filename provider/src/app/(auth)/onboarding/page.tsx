@@ -1,10 +1,15 @@
 import AccountProfile from "@/components/forms/AccountProfile";
 import { fetchUser } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 const Onboarding = async () => {
 	const user = await currentUser();
 	const userInfo = await fetchUser(user?.id!);
+
+	if (userInfo?.onboarded) {
+		redirect('/');
+	}
 
 	const userData = {
 		userId: user?.id!,
@@ -15,7 +20,7 @@ const Onboarding = async () => {
 		experienceYears: userInfo?.experienceYears || "",
 		hourlyRate: userInfo?.hourlyRate || "",
 		bio: userInfo?.bio || "",
-		onboarded: userInfo?.onboarded || ""
+		onboarded: userInfo?.onboarded || false
 	}
 
 	return (

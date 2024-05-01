@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import OnboardedContextProvider from "./OnboardContext";
 
 interface Props {
 	children: React.ReactNode;
@@ -8,9 +7,7 @@ interface Props {
 const Providers = ({ children }: Props) => {
 	return (
 		<ClerkProvider>
-			<OnboardedContextProvider>
-				{children}
-			</OnboardedContextProvider>
+			{children}
 		</ClerkProvider>
 	);
 };

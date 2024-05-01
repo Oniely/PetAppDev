@@ -15,10 +15,10 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useUploadThing } from "@/utils/uploadthing";
 import { upsertUser } from "@/lib/actions/user.action";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { useOnboarded } from "@/lib/store/OnboardStore";
 
 interface Props {
@@ -39,10 +39,6 @@ const AccountProfile = ({ user }: Props) => {
 	const [files, setFiles] = useState<File[]>([]);
 	const { startUpload } = useUploadThing('media');
 	const { setOnboarded } = useOnboarded();
-
-	if (user?.onboarded) {
-		setOnboarded(user.onboarded);
-	}
 
 	const pathname = usePathname();
 

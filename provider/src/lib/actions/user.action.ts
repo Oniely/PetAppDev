@@ -57,9 +57,7 @@ export async function upsertUser({
       { upsert: true }
     );
 
-    if (path === "/profile/edit") {
-        revalidatePath(path);
-    }
+    revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Failed to insert/update user: ${error.message}`);
   }
