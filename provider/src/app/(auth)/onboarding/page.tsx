@@ -1,5 +1,6 @@
 import AccountProfile from "@/components/forms/AccountProfile";
 import { fetchUser } from "@/lib/actions/user.action";
+import { SignOutButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -20,11 +21,15 @@ const Onboarding = async () => {
 		experienceYears: userInfo?.experienceYears || "",
 		hourlyRate: userInfo?.hourlyRate || "",
 		bio: userInfo?.bio || "",
-		onboarded: userInfo?.onboarded || false
-	}
+		onboarded: userInfo?.onboarded,
+	};
 
 	return (
-		<main className="mx-auto flex flex-col max-w-3xl px-10 py-20 w-full h-full self-start bg-low-orange/30">
+		<main className="mx-auto flex flex-col max-w-3xl px-10 py-20 w-full h-full self-start bg-low-orange/30 relative">
+			<div className="absolute right-10">
+				<SignOutButton redirectUrl="/sign-in" /> 
+			</div>
+
 			<h1 className="head-text">Onboarding</h1>
 			<p className="-mt-8">Complete your profile now to continue</p>
 

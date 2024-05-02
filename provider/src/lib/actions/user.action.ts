@@ -42,20 +42,26 @@ export async function upsertUser({
   try {
     connectDB();
 
-    await Provider.findOneAndUpdate(
-      { userId },
-      {
-        image_url,
-        phoneNumber,
-        companyName,
-        typeOfProvider,
-        bio,
-        experienceYears,
-        hourlyRate,
-        onboarded,
-      },
-      { upsert: true }
-    );
+    const companyExist = await Provider.findOne({ companyName });
+
+    if (!companyExist) {
+      await Provider.findOneAndUpdate(
+        { userId },
+        {
+          image_url,
+          phoneNumber,
+          companyName,
+          typeOfProvider,
+          bio,
+          experienceYears,
+          hourlyRate,
+          onboarded,
+        },
+        { upsert: true }
+      );
+    } else {
+      return false;
+    }
 
     revalidatePath(path);
   } catch (error: any) {
