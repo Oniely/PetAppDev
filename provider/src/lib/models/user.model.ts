@@ -20,7 +20,7 @@ const ServiceProviderSchema = new mongoose.Schema({
 	},
 	typeOfProvider: {
 		type: String,
-		required: true
+		required: true,
 	},
 	bio: String,
 	experienceYears: Number,
@@ -30,26 +30,12 @@ const ServiceProviderSchema = new mongoose.Schema({
 	},
 	onboarded: {
 		type: Boolean,
-		default: false
+		default: false,
 	},
 	servicesOffered: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
 	ratings: [{ rating: Number, comment: String }],
 });
 
-const ServiceSchema = new mongoose.Schema({
-	provider: { type: mongoose.Schema.Types.ObjectId, ref: "ServiceProvider" },
-	serviceName: {
-		type: String,
-		required: true,
-	},
-	description: String,
-	duration: {
-		type: Number,
-		require: true,
-		min: 1, // in minutes
-	},
-	price: { type: Number, require: true },
-});
-
-export const Provider = mongoose.models.Provider || mongoose.model("Provider", ServiceProviderSchema);
-export const Service = mongoose.models.Service || mongoose.model("Service", ServiceSchema);
+export const Provider =
+	mongoose.models.Provider ||
+	mongoose.model("Provider", ServiceProviderSchema);

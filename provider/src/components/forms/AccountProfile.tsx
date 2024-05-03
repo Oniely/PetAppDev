@@ -15,11 +15,10 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useUploadThing } from "@/utils/uploadthing";
 import { upsertUser } from "@/lib/actions/user.action";
-import { redirect, usePathname, useRouter } from "next/navigation";
-import { useOnboarded } from "@/lib/store/OnboardStore";
+import { usePathname } from "next/navigation";
 import Loading from "../shared/Loading";
 
 interface Props {
@@ -40,7 +39,6 @@ const AccountProfile = ({ user }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [files, setFiles] = useState<File[]>([]);
 	const { startUpload } = useUploadThing("media");
-	const { setOnboarded } = useOnboarded();
 
 	const pathname = usePathname();
 
@@ -52,8 +50,8 @@ const AccountProfile = ({ user }: Props) => {
 			companyName: "",
 			typeOfProvider: "",
 			bio: "",
-			experienceYears: "",
-			hourlyRate: "",
+			experienceYears: 0,
+			hourlyRate: 0,
 		},
 	});
 
@@ -101,16 +99,14 @@ const AccountProfile = ({ user }: Props) => {
 				companyName: values.companyName,
 				typeOfProvider: values.typeOfProvider,
 				phoneNumber: values.phoneNumber,
-				experienceYears: parseInt(values.experienceYears),
-				hourlyRate: parseInt(values.hourlyRate),
+				experienceYears: values.experienceYears,
+				hourlyRate: values.hourlyRate,
 				bio: values.bio,
 				onboarded: true,
 				path: pathname,
 			});
 
-			if (success) {
-				setOnboarded(true);
-			} else {
+			if (!success) {
 				alert("Company Already Exist");
 			}
 			setIsLoading(false);
@@ -242,7 +238,6 @@ const AccountProfile = ({ user }: Props) => {
 											type="number"
 											className="pl-6"
 											{...field}
-											datatype="number"
 										/>
 									</div>
 								</FormControl>

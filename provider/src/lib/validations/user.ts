@@ -5,7 +5,7 @@ export const UserValidation = z.object({
     companyName: z.string().min(1),
     typeOfProvider: z.string().min(1),
     phoneNumber: z.string().min(11),
-    experienceYears: z.string().min(1),
-    hourlyRate: z.string().min(1),
+    experienceYears: z.coerce.number().int().positive().min(1),
+    hourlyRate: z.coerce.number().int().positive().min(1)
     bio: z.string().min(2).max(1000),
 })
