@@ -10,12 +10,12 @@ export const ServiceTypes = {
     "Pet Boarding": "PET_BOARDING",
     "Pet Sitting": "PET_SITTING",
     "Pet Walking": "PET_WALKING",
-} as const;
+};
 
 export const ServiceValidation = z.object({
     image_url: z.string().url().min(1),
     serviceName: z.string().min(1),
-    typeOfService: z.nativeEnum(ServiceTypes),
+    typeOfService: z.nativeEnum(ServiceTypes, { message: "Please select the type of service" }),
     description: z.string().min(2).max(1000),
     duration: z.coerce.number().int().positive().min(1),
     price: z.coerce.number().int().positive().min(1)

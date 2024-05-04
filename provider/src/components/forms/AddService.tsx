@@ -6,25 +6,38 @@ import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Loading from "../shared/Loading";
-import { Service } from "@/lib/models/service.model";
 import { useUploadThing } from "@/utils/uploadthing";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../ui/select"
+} from "../ui/select";
+import { usePathname } from "next/navigation";
+import { CreateService } from "@/lib/actions/service.action";
+import { useUser } from "@clerk/nextjs";
 
 const AddService = () => {
+	const { user } = useUser();
 	const [files, setFiles] = useState<File[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const { startUpload } = useUploadThing('media');
+	const { startUpload } = useUploadThing("media");
+
+	const pathname = usePathname();
 
 	const form = useForm({
 		resolver: zodResolver(ServiceValidation),
@@ -77,25 +90,33 @@ const AddService = () => {
 				return;
 			}
 
-			const service = await Service.create({
+			await CreateService({
+				userId: user?.id!,
 				image_url: values.image_url,
 				serviceName: values.serviceName,
+				typeOfService: values.typeOfService,
 				description: values.description,
 				duration: values.duration,
 				price: values.price,
+				path: pathname,
 			});
 		} catch (error: any) {
-			throw new Error(`Something occur while creating a service... ${error.message}`)
+			throw new Error(
+				`Something occur while creating a service... ${error.message}`
+			);
 		} finally {
 			setIsLoading(false);
 		}
-	}
+	};
 
 	return (
-		<>	
+		<>
 			<Loading loading={isLoading} />
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col justify-start gap-8 max-w-3xl">
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className="flex flex-1 flex-col justify-start gap-8 max-w-3xl"
+				>
 					<FormField
 						control={form.control}
 						name="image_url"
@@ -135,20 +156,28 @@ const AddService = () => {
 						render={({ field }) => (
 							<FormItem className="flex flex-col gap-3 w-full">
 								<FormLabel>Type Of Service</FormLabel>
-								<FormControl>
-									<Select>
+								<Select onValueChange={field.onChange}>
+									<FormControl>
 										<SelectTrigger>
 											<SelectValue placeholder="Select service type" />
 										</SelectTrigger>
-										<SelectContent>
-											{Object.keys(ServiceTypes).map((key) => (
-												<SelectItem value={ServiceTypes[key]} key={key}>
-													{key}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</FormControl>
+									</FormControl>
+									<SelectContent>
+										<SelectGroup>
+											{Object.entries(ServiceTypes).map(
+												([key, value]) => (
+													<SelectItem
+														value={value}
+														key={value}
+													>
+														{key}
+													</SelectItem>
+												)
+											)}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+
 								<FormMessage />
 							</FormItem>
 						)}
@@ -171,7 +200,14 @@ const AddService = () => {
 						name="duration"
 						render={({ field }) => (
 							<FormItem className="flex flex-col gap-3 w-full">
-								<FormLabel>Duration</FormLabel>
+								<FormLabel>
+									Duration{" - "}
+									<span className="text-dark-gray/70 font-light">
+										{
+											"(in minutes)"
+										}
+									</span>
+								</FormLabel>
 								<FormControl>
 									<Input type="number" {...field} />
 								</FormControl>
@@ -184,7 +220,7 @@ const AddService = () => {
 						name="price"
 						render={({ field }) => (
 							<FormItem className="flex flex-col gap-3 w-full">
-								<FormLabel>Duration</FormLabel>
+								<FormLabel>Price</FormLabel>
 								<FormControl>
 									<div className="flex items-center gap-2 relative">
 										<span className="absolute left-2 text-sm font-light">
@@ -201,9 +237,7 @@ const AddService = () => {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">
-						Create Service
-					</Button>
+					<Button type="submit">Create Service</Button>
 				</form>
 			</Form>
 		</>
