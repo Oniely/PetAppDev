@@ -36,6 +36,10 @@ const ServiceSchema = new mongoose.Schema({
 		require: true,
 		min: 1, // in minutes
 	},
+	status: {
+		type: Boolean,
+		default: true,
+	},
 	price: { type: Number, require: true },
 });
 

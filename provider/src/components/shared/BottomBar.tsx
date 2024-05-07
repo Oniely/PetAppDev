@@ -27,9 +27,8 @@ const BottomBar = () => {
 						<Link
 							href={link.route}
 							key={link.label}
-							className={`flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5 relative ${
-								isActive && "bg-main-orange"
-							}`}
+							className={`flex flex-col items-center justify-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5 relative ${isActive && "bg-main-orange"
+								}`}
 						>
 							<Image
 								src={link.img}
@@ -37,8 +36,8 @@ const BottomBar = () => {
 								width={24}
 								height={24}
 							/>
-							<p className="text-sm max-sm:hidden">
-								{link.label.split("/s+./")[0]}
+							<p className="text-sm text-center max-sm:hidden">
+								{link.label.split(' ')[0]}
 							</p>
 						</Link>
 					);

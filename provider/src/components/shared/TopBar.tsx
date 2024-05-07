@@ -20,7 +20,7 @@ const TopBar = () => {
 			</Link>
 
 			<div className="flexCenter gap-2">
-				<UserButton />
+				<Image src={user?.imageUrl!} alt="Profile Photo" width={35} height={35} className="rounded-full aspect-square" />
 				<p>{user?.firstName}</p>
 			</div>
 		</nav>
