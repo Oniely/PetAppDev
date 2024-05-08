@@ -1,3 +1,4 @@
+import BreadCrumbs from "@/components/shared/BreadCrumbs";
 import { fetchUser } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -12,7 +13,10 @@ const Home = async () => {
 
 	return (
 		<>
-			<h1 className="head-text">Home</h1>
+			<header className="header">
+				<h1 className="head-text">Home</h1>
+				<BreadCrumbs />
+			</header>
 			<section>Home</section>
 		</>
 	);

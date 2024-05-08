@@ -68,10 +68,20 @@ export const fetchServices = async (userId: string) => {
 	try {
 		connectDB();
 
-		const services =  await Provider.findOne({ userId }).populate('servicesOffered');
+		const services = await Provider.findOne({ userId }).populate('servicesOffered');
 
 		return services.servicesOffered;
 	} catch (error: any) {
 		throw new Error(`An error occur while fetching services: ${error.message}`);
+	}
+}
+
+export const getService = async (serviceId: string) => {
+	try {
+		connectDB();
+
+		return await Service.findById(serviceId).populate('provider');
+	} catch (error: any) {
+		throw new Error(`An error occur while fetching a service: ${error.message}`);
 	}
 }

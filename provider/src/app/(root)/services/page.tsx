@@ -1,4 +1,6 @@
 import ServiceCard from "@/components/cards/ServiceCard";
+import BreadCrumbs from "@/components/shared/BreadCrumbs";
+import SearchBar from "@/components/shared/SearchBar";
 import { Button } from "@/components/ui/button";
 import { fetchServices } from "@/lib/actions/service.action";
 import { currentUser } from "@clerk/nextjs/server";
@@ -8,13 +10,27 @@ const Services = async () => {
 	const user = await currentUser();
 	const services = await fetchServices(user?.id!);
 
+	const breadCrumbs = [
+		{
+			name: "Services",
+			href: "/services"
+		},
+	];
+
 	if (!services) {
 		return;
 	}
 
 	return (
 		<>
-			<h1 className="head-text">Services</h1>
+			<header className="header">
+				<h1 className="head-text">Services</h1>
+
+				<BreadCrumbs crumbs={breadCrumbs} />
+			</header>
+			<div>
+				<SearchBar />
+			</div>
 			<section className="">
 				{services.length > 0 && (
 					<div className="grid grid-cols-3 max-sm:grid-cols-2 gap-3">

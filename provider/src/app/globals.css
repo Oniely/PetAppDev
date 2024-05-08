@@ -14,8 +14,12 @@
   }
 }
 
+.header {
+  @apply flex items-center justify-between mb-10
+}
+
 .head-text {
-  @apply text-[30px] leading-[140%] font-bold mb-10
+  @apply text-[30px] leading-[140%] font-bold
 }
 
 @layer base {
