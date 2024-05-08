@@ -63,3 +63,15 @@ export const CreateService = async ({
 		throw new Error(`An error occur when creating service: ${error.message}`);
 	}
 };
+
+export const fetchServices = async (userId: string) => {
+	try {
+		connectDB();
+
+		const services =  await Provider.findOne({ userId }).populate('servicesOffered');
+
+		return services.servicesOffered;
+	} catch (error: any) {
+		throw new Error(`An error occur while fetching services: ${error.message}`);
+	}
+}
