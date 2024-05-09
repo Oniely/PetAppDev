@@ -29,7 +29,7 @@ const ServiceDetail = async ({ params }: { params: { id: string } }) => {
 			<section className="grid grid-cols-2 max-sm:grid-cols-1 relative">
 				<div className="flex flex-col gap-3">
 					<div className="h-[300px] relative">
-						<Image src={service.image_url} alt="Service Image" className="object-cover rounded-lg" fill />
+						<Image src={service.image_url} alt="Service Image" className="object-contain rounded-lg" fill />
 					</div>
 				</div>
 				<div className="flex flex-col justify-between sm:ml-12 max-sm:mt-4 h-[300px] max-sm:h-auto max-sm:gap-4">
@@ -55,7 +55,7 @@ const ServiceDetail = async ({ params }: { params: { id: string } }) => {
 			</section>
 			<section className="mt-10">
 				<h1 className="head-text">Extra Info</h1>
-				<p className="-mt-8">Maybe current history appointment numbers?</p>
+				<p>Maybe current history appointment numbers?</p>
 				<p>Graphs?</p>
 				<p>show here all current appointments?</p>
 			</section>

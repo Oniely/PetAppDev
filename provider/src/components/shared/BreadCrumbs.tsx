@@ -21,7 +21,7 @@ export interface BreadCrumbProps {
 const BreadCrumbs = ({ crumbs = [] }: BreadCrumbProps) => {
 	return (
 		<Breadcrumb>
-			<BreadcrumbList>
+			<BreadcrumbList className="flex justify-end">
 				<BreadcrumbItem>
 					{crumbs.length === 0 ? (
 						<BreadcrumbPage>Home</BreadcrumbPage>
