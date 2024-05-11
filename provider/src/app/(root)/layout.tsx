@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<Providers>
-			<html lang="en">
+			<html lang="en" suppressHydrationWarning>
 				<body className={font.className}>
 					<TopBar />
 					<main className="flex flex-row">

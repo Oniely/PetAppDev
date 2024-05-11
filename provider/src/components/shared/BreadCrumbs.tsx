@@ -1,4 +1,4 @@
-import { Slash } from "lucide-react"
+import { Slash } from "lucide-react";
 
 import {
 	Breadcrumb,
@@ -7,15 +7,15 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
 interface BreadCrumb {
-	name: string,
-	href: string
+	name: string;
+	href: string;
 }
 
 export interface BreadCrumbProps {
-	crumbs?: BreadCrumb[]
+	crumbs?: BreadCrumb[];
 }
 
 const BreadCrumbs = ({ crumbs = [] }: BreadCrumbProps) => {
@@ -32,26 +32,31 @@ const BreadCrumbs = ({ crumbs = [] }: BreadCrumbProps) => {
 				<BreadcrumbSeparator>
 					<Slash />
 				</BreadcrumbSeparator>
-				{crumbs!.length > 0 && (
-					crumbs!.map((crumb, i) => (
-						<BreadcrumbItem key={i}>
-							{i !== crumbs!.length - 1 ? (
-								<BreadcrumbLink href={crumb.href}>{crumb.name}</BreadcrumbLink>
-							) : (
-								<BreadcrumbPage>{crumb.name}</BreadcrumbPage>
-							)}
 
+				{crumbs!.length > 0 &&
+					crumbs!.map((crumb, i) => (
+						<>
+							<BreadcrumbItem key={i}>
+								{i !== crumbs!.length - 1 ? (
+									<BreadcrumbLink href={crumb.href}>
+										{crumb.name}
+									</BreadcrumbLink>
+								) : (
+									<BreadcrumbPage>
+										{crumb.name}
+									</BreadcrumbPage>
+								)}
+							</BreadcrumbItem>
 							{i !== crumbs!.length - 1 && (
-								<BreadcrumbSeparator>
+								<BreadcrumbSeparator key={`sep-${i}`}>
 									<Slash />
 								</BreadcrumbSeparator>
 							)}
-						</BreadcrumbItem>
-					))
-				)}
+						</>
+					))}
 			</BreadcrumbList>
 		</Breadcrumb>
-	)
-}
+	);
+};
 
 export default BreadCrumbs;

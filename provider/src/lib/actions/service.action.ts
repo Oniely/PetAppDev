@@ -17,6 +17,18 @@ interface ServiceParams {
 	path: string;
 }
 
+export const getService = async (serviceId: string) => {
+	try {
+		connectDB();
+
+		return await Service.findById(serviceId).populate("provider");
+	} catch (error: any) {
+		throw new Error(
+			`An error occur while fetching a service: ${error.message}`
+		);
+	}
+};
+
 export const CreateService = async ({
 	userId,
 	image_url,
@@ -55,12 +67,14 @@ export const CreateService = async ({
 		);
 
 		if (!updatedProvider) {
-			throw new Error(`Provider not found or update has failed.`)
+			throw new Error(`Provider not found or update has failed.`);
 		}
 
 		revalidatePath(path);
 	} catch (error: any) {
-		throw new Error(`An error occur when creating service: ${error.message}`);
+		throw new Error(
+			`An error occur when creating service: ${error.message}`
+		);
 	}
 };
 
@@ -68,20 +82,59 @@ export const fetchServices = async (userId: string) => {
 	try {
 		connectDB();
 
-		const services = await Provider.findOne({ userId }).populate('servicesOffered');
+		const services = await Provider.findOne({ userId }).populate(
+			"servicesOffered"
+		);
 
 		return services.servicesOffered;
 	} catch (error: any) {
-		throw new Error(`An error occur while fetching services: ${error.message}`);
+		throw new Error(
+			`An error occur while fetching services: ${error.message}`
+		);
 	}
+};
+
+interface UpdateServiceProps {
+	serviceId: string;
+	image_url?: string;
+	serviceName: string;
+	typeOfService: string;
+	description: string;
+	duration: number;
+	price: number;
+	path: string;
 }
 
-export const getService = async (serviceId: string) => {
+export const UpdateService = async ({
+	serviceId,
+	image_url,
+	serviceName,
+	typeOfService,
+	description,
+	duration,
+	price,
+	path,
+}: UpdateServiceProps) => {
+	let newService: any = {
+		serviceName,
+		typeOfService,
+		description,
+		duration,
+		price,
+	}
+
 	try {
 		connectDB();
-
-		return await Service.findById(serviceId).populate('provider');
+		console.log(image_url)
+		if (image_url) {
+			newService.image_url = image_url;
+		}
+		
+		await Service.findOneAndUpdate({ _id: serviceId }, { $set: newService });
+		revalidatePath(path);
 	} catch (error: any) {
-		throw new Error(`An error occur while fetching a service: ${error.message}`);
+		throw new Error(
+			`An error occur while updating service: ${error.message}`
+		);
 	}
-}
+};

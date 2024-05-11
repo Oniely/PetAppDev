@@ -31,7 +31,7 @@ const Onboarding = async () => {
 			</div>
 
 			<h1 className="head-text">Onboarding</h1>
-			<p className="-mt-8">Complete your profile now to continue</p>
+			<p>Complete your profile now to continue</p>
 
 			<section className="mt-9">
 				<AccountProfile user={userData} />

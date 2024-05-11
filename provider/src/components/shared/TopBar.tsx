@@ -1,6 +1,6 @@
 "use client";
 
-import { UserButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,7 +21,6 @@ const TopBar = () => {
 
 			<div className="flexCenter gap-2">
 				<Image src={user?.imageUrl!} alt="Profile Photo" width={35} height={35} className="rounded-full aspect-square" />
-				<p>{user?.firstName}</p>
 			</div>
 		</nav>
 	);

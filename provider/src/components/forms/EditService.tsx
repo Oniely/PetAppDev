@@ -2,7 +2,7 @@
 
 import { ServiceValidation, ServiceTypes } from "@/lib/validations/service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Loading from "../shared/Loading";
@@ -27,12 +27,22 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
-import { usePathname } from "next/navigation";
-import { CreateService } from "@/lib/actions/service.action";
-import { useUser } from "@clerk/nextjs";
+import { redirect, usePathname } from "next/navigation";
+import { UpdateService } from "@/lib/actions/service.action";
 
-const AddService = () => {
-	const { user } = useUser();
+interface Props {
+	serviceId: string;
+	service: {
+		image_url?: string,
+		serviceName?: string,
+		typeOfService?: string,
+		description?: string,
+		duration?: number,
+		price?: number,
+	}
+}
+
+const EditService = ({ serviceId, service }: Props) => {
 	const [files, setFiles] = useState<File[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { startUpload } = useUploadThing("media");
@@ -42,12 +52,12 @@ const AddService = () => {
 	const form = useForm({
 		resolver: zodResolver(ServiceValidation),
 		defaultValues: {
-			image_url: "",
-			serviceName: "",
-			typeOfService: "",
-			description: "",
-			duration: 0,
-			price: 0,
+			image_url: service.image_url || "",
+			serviceName: service.serviceName || "",
+			typeOfService: service.typeOfService || "",
+			description: service.description || "",
+			duration: service.duration || 0,
+			price: service.price || 0,
 		},
 	});
 
@@ -78,27 +88,28 @@ const AddService = () => {
 	const onSubmit = async (values: z.infer<typeof ServiceValidation>) => {
 		setIsLoading(true);
 
-		try {
-			const imgRes = await startUpload(files);
+		let newService: any = {
+			serviceId,
+			serviceName: values.serviceName,
+			typeOfService: values.typeOfService,
+			description: values.description,
+			duration: values.duration,
+			price: values.price,
+			path: pathname,
+		}
 
-			if (imgRes) {
-				values.image_url = imgRes[0].url;
-			} else {
-				setIsLoading(false);
-				alert("Failed Image Upload");
-				return;
+		try {
+			if (files.length > 0) {
+				const imgRes = await startUpload(files);
+
+				if (imgRes) {
+					values.image_url = imgRes[0]?.url;
+					newService.image_url = values.image_url;
+				}
+
 			}
 
-			await CreateService({
-				userId: user?.id!,
-				image_url: values.image_url,
-				serviceName: values.serviceName,
-				typeOfService: values.typeOfService,
-				description: values.description,
-				duration: values.duration,
-				price: values.price,
-				path: pathname,
-			});
+			await UpdateService(newService);
 		} catch (error: any) {
 			throw new Error(
 				`Something occur while creating a service... ${error.message}`
@@ -155,7 +166,7 @@ const AddService = () => {
 						render={({ field }) => (
 							<FormItem className="flex flex-col gap-3 w-full">
 								<FormLabel>Type Of Service</FormLabel>
-								<Select onValueChange={field.onChange}>
+								<Select onValueChange={field.onChange} defaultValue={field.value}>
 									<FormControl>
 										<SelectTrigger>
 											<SelectValue placeholder="Select service type" />
@@ -166,8 +177,8 @@ const AddService = () => {
 											{Object.entries(ServiceTypes).map(
 												([key, value]) => (
 													<SelectItem
-														value={value}
 														key={value}
+														value={value}
 													>
 														{key}
 													</SelectItem>
@@ -236,11 +247,11 @@ const AddService = () => {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">Create Service</Button>
+					<Button type="submit">Update Service</Button>
 				</form>
 			</Form>
 		</>
 	);
 };
 
-export default AddService;
+export default EditService;

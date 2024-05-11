@@ -25,7 +25,6 @@ const Services = async () => {
 		<>
 			<header className="header">
 				<h1 className="head-text">Services</h1>
-
 				<BreadCrumbs crumbs={breadCrumbs} />
 			</header>
 			<div>
