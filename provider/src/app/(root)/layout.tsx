@@ -11,6 +11,9 @@ const font = Outfit({ subsets: ["latin"] });
 export const metadata: Metadata = {
 	title: "Pet Care Services Application",
 	description: "Next.js Application",
+	icons: {
+		icon: '/images/favicon.ico'
+	}
 };
 
 export default function RootLayout({
