@@ -6,25 +6,8 @@ const PetOwnerSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	userType: {
-		type: String,
-		enum: ["PetOwner", "ServiceProvider"],
-		default: "PetOwner",
-		required: true,
-	},
 	image_url: String,
 	phoneNumber: String,
-	address: {
-		lat: {
-			type: Number,
-			default: 0,
-		},
-		long: {
-			type: Number,
-			default: 0,
-		},
-	},
-
 	fname: String,
 	lname: String,
 	pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],

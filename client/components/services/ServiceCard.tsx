@@ -3,13 +3,21 @@ import { Feather } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
 
-const ServiceCard = () => {;
+interface Props {
+	href: string;
+	image_url: string;
+	companyName: string;
+	type: string;
+
+}
+
+const ServiceCard = ({ href, image_url, companyName, type }: Props) => {;
 	return (
-		<Link href={'/services/service'} asChild>
+		<Link href={href} asChild>
 			<Pressable className="mb-8">
 				<View className="bg-white first-letter py-4 px-5 flex-row space-x-5 rounded-3xl shadow-2xl">
 					<Image
-						source={require("@/assets/images/dogo_care.jpg")}
+						source={{ uri: image_url }}
 						className="w-[100px] h-[100px] rounded-xl"
 					/>
 					<View className="items-start justify-center">
@@ -17,13 +25,13 @@ const ServiceCard = () => {;
 							style={{ fontFamily: "Poppins_500Medium" }}
 							className="text-base"
 						>
-							Dr. Anna Johanson
+							{companyName}
 						</Text>
 						<Text
 							style={{ fontFamily: "Poppins_400Regular" }}
 							className="text-low-gray"
 						>
-							Veterinary
+							{type}
 						</Text>
 						<View className="flex-row mt-2 gap-2">
 							<View className="flex-row items-center gap-1">

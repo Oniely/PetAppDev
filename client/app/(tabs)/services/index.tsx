@@ -2,6 +2,8 @@ import Category from "@/components/home/Category";
 import ServiceCard from "@/components/services/ServiceCard";
 import Colors from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -12,7 +14,26 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+type ServiceType = {
+	_id: string;
+	href: string;
+	image_url: string;
+	companyName: string;
+	typeOfProvider: string;
+}[];
+
 const Services = () => {
+	const [services, setServices] = useState<ServiceType>([]);
+
+	useEffect(() => {
+		axios
+			.get("/service/all")
+			.then((res) => {
+				setServices(res.data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
+
 	return (
 		<SafeAreaView className="flex-1">
 			<ScrollView className="flex-1 bg-off-white px-4 pt-6">
@@ -64,9 +85,15 @@ const Services = () => {
 					</Text>
 				</View>
 
-				<ServiceCard />
-				<ServiceCard />
-				<ServiceCard />
+				{services.map((service) => (
+					<ServiceCard
+						key={service?.companyName!}
+						href={`/services/service/${service?._id!}`}
+						image_url={service?.image_url!}
+						companyName={service?.companyName!}
+						type={service?.typeOfProvider!}
+					/>
+				))}
 			</ScrollView>
 		</SafeAreaView>
 	);

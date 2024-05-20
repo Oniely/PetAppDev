@@ -1,6 +1,9 @@
+import { Stack, useLocalSearchParams } from "expo-router";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 const service = () => {
+	const { id } = useLocalSearchParams();
+
 	return (
 		<ScrollView className="flex-1 bg-off-white">
 			<View className="flex-1 bg-main-orange">
@@ -18,6 +21,12 @@ const service = () => {
 							className="text-2xl"
 						>
 							Dr. Anna Johanson
+						</Text>
+						<Text
+							style={{ fontFamily: "Poppins_400Regular" }}
+							className="text-low-gray"
+						>
+							{id}
 						</Text>
 						<Text
 							style={{ fontFamily: "Poppins_400Regular" }}

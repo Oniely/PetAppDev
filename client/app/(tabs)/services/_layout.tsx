@@ -36,7 +36,7 @@ const ServicesLayout = () => {
 		>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
 			<Stack.Screen
-				name="service"
+				name="service/[id]"
 				options={{ headerShown: true, title: "Services" }}
 			/>
 		</Stack>
