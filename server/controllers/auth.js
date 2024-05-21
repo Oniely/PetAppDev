@@ -40,7 +40,8 @@ const signUp = async (req, res) => {
 	if (userId.startsWith("user_")) {
 		console.log(`SignedIn with: ${userId}`);
 	} else {
-		res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid userId" });
+		res.status(StatusCodes.FORBIDDEN).json({ message: "Invalid userId" });
+		return;
 	}
 
 	try {
