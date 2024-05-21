@@ -88,7 +88,7 @@ const Services = () => {
 				{services.map((service) => (
 					<ServiceCard
 						key={service?.companyName!}
-						href={`/services/service/${service?._id!}`}
+						href={`/services/provider/${service?._id!}`}
 						image_url={service?.image_url!}
 						companyName={service?.companyName!}
 						type={service?.typeOfProvider!}

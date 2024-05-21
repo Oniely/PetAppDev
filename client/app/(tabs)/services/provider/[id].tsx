@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
-const Service = () => {
+const Provider = () => {
 	const { id } = useLocalSearchParams();
 	const [provider, setProvider] = useState<any>({});
 	const [time, setTime] = useState({
@@ -16,8 +16,8 @@ const Service = () => {
 			.get(`service/provider/${id}`)
 			.then((res) => {
 				setTime({
-					am: res.data.operatingHours.startTime,
-					pm: res.data.operatingHours.endTime,
+					am: res.data.operatingHours.startTime!,
+					pm: res.data.operatingHours.endTime!,
 				})
 				setProvider(res.data);
 			})
@@ -119,14 +119,16 @@ const Service = () => {
 						</View>
 					</View>
 					<View className="w-full">
-						<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-off-white text-center"
-							>
-								Book an Appointment
-							</Text>
-						</TouchableOpacity>
+						<Link href={`/services/service/${id}`} asChild>
+							<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
+								<Text
+									style={{ fontFamily: "Poppins_600SemiBold" }}
+									className="text-off-white text-center"
+								>
+									Book an Appointment
+								</Text>
+							</TouchableOpacity>
+						</Link>
 					</View>
 				</View>
 			</View>
@@ -134,4 +136,4 @@ const Service = () => {
 	);
 };
 
-export default Service;
+export default Provider;

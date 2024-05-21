@@ -1,7 +1,6 @@
 import Colors from '@/constants/Colors'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text } from 'react-native'
 
 const AuthLayout = () => {
    return (

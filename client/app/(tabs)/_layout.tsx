@@ -4,8 +4,11 @@ import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import Colors from "@/constants/Colors";
 import { StatusBar } from "expo-status-bar";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function TabLayout() {
+	const { isSignedIn } = useAuth();
+
 	return (
 		<>
 			<Tabs
@@ -54,7 +57,6 @@ export default function TabLayout() {
 				}}
 			>
 				<Tabs.Screen name="index" options={{ href: null }} />
-
 				<Tabs.Screen
 					name="home"
 					options={{
@@ -63,6 +65,7 @@ export default function TabLayout() {
 							<Feather name="home" size={24} color={color} />
 						),
 					}}
+					redirect={!isSignedIn}
 				/>
 				<Tabs.Screen
 					name="services"
@@ -72,6 +75,7 @@ export default function TabLayout() {
 							<Feather name="heart" size={24} color={color} />
 						),
 					}}
+					redirect={!isSignedIn}
 				/>
 				<Tabs.Screen
 					name="moments"
@@ -81,6 +85,7 @@ export default function TabLayout() {
 							<Feather name="trello" size={24} color={color} />
 						),
 					}}
+					redirect={!isSignedIn}
 				/>
 				<Tabs.Screen
 					name="notifications"
@@ -90,6 +95,7 @@ export default function TabLayout() {
 							<Feather name="bell" size={24} color={color} />
 						),
 					}}
+					redirect={!isSignedIn}
 				/>
 				<Tabs.Screen
 					name="profile"
@@ -99,6 +105,7 @@ export default function TabLayout() {
 							<Feather name="user" size={24} color={color} />
 						),
 					}}
+					redirect={!isSignedIn}
 				/>
 			</Tabs>
 

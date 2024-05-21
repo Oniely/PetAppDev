@@ -1,8 +1,6 @@
-import { Link, Redirect } from "expo-router";
-import { View, Text } from "react-native";
+import { Redirect } from "expo-router";
 
 const Index = () => {
-	
 
 	return (
 		<Redirect href={'/home/'} />
