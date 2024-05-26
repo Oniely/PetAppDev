@@ -16,9 +16,9 @@ const Provider = () => {
 			.get(`service/provider/${id}`)
 			.then((res) => {
 				setTime({
-					am: res.data.operatingHours.startTime!,
-					pm: res.data.operatingHours.endTime!,
-				})
+					am: res.data.operatingHours?.startTime!,
+					pm: res.data.operatingHours?.endTime!,
+				});
 				setProvider(res.data);
 			})
 			.catch((err: any) => console.log(err.message));
@@ -29,7 +29,7 @@ const Provider = () => {
 			<View className="flex-1 bg-main-orange">
 				<View className="h-[220px] items-center justify-center space-y-3 px-6">
 					<Image
-						source={{ uri: provider.image_url }}
+						source={{ uri: provider?.image_url }}
 						alt="Profile Photo"
 						className="w-full h-44 rounded-lg object-contain"
 					/>
@@ -40,7 +40,7 @@ const Provider = () => {
 							style={{ fontFamily: "Poppins_600SemiBold" }}
 							className="text-2xl"
 						>
-							{provider.companyName}
+							{provider?.companyName}
 						</Text>
 						<Text
 							style={{ fontFamily: "Poppins_400Regular" }}
@@ -58,7 +58,7 @@ const Provider = () => {
 								style={{ fontFamily: "Poppins_600SemiBold" }}
 								className="text-lg text-main-orange"
 							>
-								{provider.experienceYears} years
+								{provider?.experienceYears} years
 							</Text>
 						</View>
 						<View className="bg-white/80 shadow-xl items-start w-[105px] p-3 rounded-lg">
@@ -69,7 +69,7 @@ const Provider = () => {
 								style={{ fontFamily: "Poppins_600SemiBold" }}
 								className="text-lg text-main-orange"
 							>
-								{`₱${provider.hourlyRate}`}
+								{`₱${provider?.hourlyRate}`}
 							</Text>
 						</View>
 						<View className="bg-white/80 shadow-xl items-start w-[105px] p-3 rounded-lg">
@@ -96,7 +96,7 @@ const Provider = () => {
 								style={{ fontFamily: "Poppins_400Regular" }}
 								className="text-low-gray max-h-[1rem] overflow-hidden"
 							>
-								{provider.bio}
+								{provider?.bio}
 							</Text>
 						</View>
 						<View className="space-y-2">
@@ -106,7 +106,7 @@ const Provider = () => {
 							>
 								Available Days
 							</Text>
-							<Text>Monday - Wednesday - Friday</Text>
+							<Text>{provider?.operatingDays ? provider.operatingDays.join(" - ") : ""}</Text>
 						</View>
 						<View className="space-y-1">
 							<Text
@@ -115,14 +115,18 @@ const Provider = () => {
 							>
 								Available Time
 							</Text>
-							<Text>{time.am} - {time.pm}</Text>
+							<Text>
+								{time.am} - {time.pm}
+							</Text>
 						</View>
 					</View>
 					<View className="w-full">
 						<Link href={`/services/service/${id}`} asChild>
 							<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
 								<Text
-									style={{ fontFamily: "Poppins_600SemiBold" }}
+									style={{
+										fontFamily: "Poppins_600SemiBold",
+									}}
 									className="text-off-white text-center"
 								>
 									Book an Appointment

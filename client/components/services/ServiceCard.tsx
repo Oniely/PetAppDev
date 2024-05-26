@@ -1,56 +1,29 @@
-import { View, Text, Image, Pressable } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import Colors from "@/constants/Colors";
-import { Link } from "expo-router";
+import { Image, View } from "react-native";
+import { Text } from "../Themed";
 
 interface Props {
-	href: string;
 	image_url: string;
-	companyName: string;
-	type: string;
-
+	serviceName: string;
 }
 
-const ServiceCard = ({ href, image_url, companyName, type }: Props) => {;
+const ServiceCard = ({ image_url, serviceName }: Props) => {
 	return (
-		<Link href={href} asChild>
-			<Pressable className="mb-8">
-				<View className="bg-white first-letter py-4 px-5 flex-row space-x-5 rounded-3xl shadow-2xl">
-					<Image
-						source={{ uri: image_url }}
-						className="w-[100px] h-[100px] rounded-xl"
-					/>
-					<View className="items-start justify-center">
-						<Text
-							style={{ fontFamily: "Poppins_500Medium" }}
-							className="text-base"
-						>
-							{companyName}
-						</Text>
-						<Text
-							style={{ fontFamily: "Poppins_400Regular" }}
-							className="text-low-gray"
-						>
-							{type}
-						</Text>
-						<View className="flex-row mt-2 gap-2">
-							<View className="flex-row items-center gap-1">
-								<Feather
-									name="star"
-									size={21}
-									color={Colors["low-orange"]}
-								/>
-								<Text style={{ fontFamily: "Montserrat_500Medium" }} className=" text-low-gray">4.9</Text>
-							</View>
-							<View className="flex-row items-center gap-1">
-							<Feather name="map-pin" size={20} color={Colors["low-orange"]} />
-								<Text style={{ fontFamily: "Montserrat_500Medium" }} className=" text-low-gray">1 km</Text>
-							</View>
-						</View>
-					</View>
-				</View>
-			</Pressable>
-		</Link>
+		<View className="bg-white w-[47%] h-48 shadow-md rounded-lg shrink-0 px-3 py-2">
+			<Image
+				source={{
+					uri: image_url,
+				}}
+				className="object-cover w-full h-[80%] rounded-md"
+			/>
+			<View className="flex-1 items-center justify-center">
+				<Text
+					style={{ fontFamily: "Poppins_500Medium" }}
+					className="text-base capitalize"
+				>
+					{serviceName}
+				</Text>
+			</View>
+		</View>
 	);
 };
 

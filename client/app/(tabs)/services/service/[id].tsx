@@ -1,132 +1,26 @@
+import ServiceCard from "@/components/services/ServiceCard";
+import Search from "@/components/shared/Search";
 import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 const Service = () => {
 	const { id } = useLocalSearchParams();
-	const [provider, setProvider] = useState<any>({});
-	const [time, setTime] = useState({
-		am: "",
-		pm: "",
-	});
-
-	useEffect(() => {
-		axios
-			.get(`service/provider/${id}`)
-			.then((res) => {
-				setTime({
-					am: res.data.operatingHours.startTime,
-					pm: res.data.operatingHours.endTime,
-				})
-				setProvider(res.data);
-			})
-			.catch((err: any) => console.log(err.message));
-	}, []);
 
 	return (
 		<ScrollView className="flex-1 bg-off-white">
-			<View className="flex-1 bg-main-orange">
-				<View className="h-[220px] items-center justify-center space-y-3 px-6">
-					<Image
-						source={{ uri: provider.image_url }}
-						alt="Profile Photo"
-						className="w-full h-44 rounded-lg object-contain"
-					/>
-				</View>
-				<View className="bg-off-white h-full rounded-t-3xl py-6 px-6">
-					<View className="items-start mb-5">
-						<Text
-							style={{ fontFamily: "Poppins_600SemiBold" }}
-							className="text-2xl"
-						>
-							{provider.companyName}
-						</Text>
-						<Text
-							style={{ fontFamily: "Poppins_400Regular" }}
-							className="text-low-gray"
-						>
-							Veterinary Behaviors
-						</Text>
-					</View>
-					<View className="flex-row justify-between items-center space-x-5 mb-5">
-						<View className="bg-white/80 shadow-xl items-start w-[105px] p-3 rounded-lg">
-							<Text style={{ fontFamily: "Poppins_500Medium" }}>
-								Experience
-							</Text>
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg text-main-orange"
-							>
-								{provider.experienceYears} years
-							</Text>
-						</View>
-						<View className="bg-white/80 shadow-xl items-start w-[105px] p-3 rounded-lg">
-							<Text style={{ fontFamily: "Poppins_500Medium" }}>
-								Price
-							</Text>
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg text-main-orange"
-							>
-								{`₱${provider.hourlyRate}`}
-							</Text>
-						</View>
-						<View className="bg-white/80 shadow-xl items-start w-[105px] p-3 rounded-lg">
-							<Text style={{ fontFamily: "Poppins_500Medium" }}>
-								Ratings
-							</Text>
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg text-main-orange"
-							>
-								4.9
-							</Text>
-						</View>
-					</View>
-					<View className="items-start space-y-4 mb-8">
-						<View className="space-y-1">
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg"
-							>
-								About
-							</Text>
-							<Text
-								style={{ fontFamily: "Poppins_400Regular" }}
-								className="text-low-gray max-h-[1rem] overflow-hidden"
-							>
-								{provider.bio}
-							</Text>
-						</View>
-						<View className="space-y-2">
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg"
-							>
-								Available Days
-							</Text>
-							<Text>Monday - Wednesday - Friday</Text>
-						</View>
-						<View className="space-y-1">
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-lg"
-							>
-								Available Time
-							</Text>
-							<Text>{time.am} - {time.pm}</Text>
-						</View>
-					</View>
-					<View className="w-full">
-						<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
-							<Text
-								style={{ fontFamily: "Poppins_600SemiBold" }}
-								className="text-off-white text-center"
-							>
-								Book an Appointment
-							</Text>
-						</TouchableOpacity>
+			<View className="flex-1 px-6">
+				<View className="bg-main-orange w-full h-28 rounded-lg mb-6"></View>
+				<Search />
+				<View className="mt-6 space-y-2">
+					<Text
+						style={{ fontFamily: "Poppins_500Medium" }}
+						className="text-base"
+					>
+						Our Services
+					</Text>
+
+					<View className="flex flex-row flex-wrap justify-between gap-2">
 					</View>
 				</View>
 			</View>

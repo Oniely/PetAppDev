@@ -1,5 +1,5 @@
 import Category from "@/components/home/Category";
-import ServiceCard from "@/components/services/ServiceCard";
+import ProviderCard from "@/components/services/ProviderCard";
 import Colors from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
@@ -86,7 +86,7 @@ const Services = () => {
 				</View>
 
 				{services.map((service) => (
-					<ServiceCard
+					<ProviderCard
 						key={service?.companyName!}
 						href={`/services/provider/${service?._id!}`}
 						image_url={service?.image_url!}

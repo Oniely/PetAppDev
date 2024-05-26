@@ -37,7 +37,34 @@ const ServicesLayout = () => {
 			<Stack.Screen name="index" options={{ headerShown: false }} />
 			<Stack.Screen
 				name="provider/[id]"
-				options={{ headerShown: true, title: "Services" }}
+				options={{ headerShown: true, title: "Provider" }}
+			/>
+			<Stack.Screen
+				name="service/[id]"
+				options={{
+					headerShown: true,
+					title: "Services",
+					headerStyle: {
+						backgroundColor: Colors["off-white"],
+					},
+					headerLeft: () => (
+						<TouchableOpacity
+							onPress={router.back}
+							className="bg-main-orange rounded-md ml-2"
+						>
+							<Feather
+								name="chevron-left"
+								size={26}
+								color={Colors["off-white"]}
+							/>
+						</TouchableOpacity>
+					),
+					headerTitleStyle: {
+						color: Colors["dark-gray"],
+						fontFamily: "Poppins_500Medium",
+						fontSize: 18,
+					},
+				}}
 			/>
 		</Stack>
 	);
