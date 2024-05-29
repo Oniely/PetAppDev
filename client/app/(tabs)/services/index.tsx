@@ -12,6 +12,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type ServiceType = {
@@ -24,18 +25,23 @@ type ServiceType = {
 
 const Services = () => {
 	const [services, setServices] = useState<ServiceType>([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+		setLoading(true);
+
 		axios
 			.get("/service/all")
 			.then((res) => {
 				setServices(res.data);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+			.finally(() => setLoading(false));
 	}, []);
 
 	return (
 		<SafeAreaView className="flex-1">
+			<Spinner visible={loading} />
 			<ScrollView className="flex-1 bg-off-white px-4 pt-6">
 				<View className="flex-row items-center justify-between bg-main-orange px-5 py-3 rounded-2xl mb-6">
 					<View>

@@ -13,6 +13,7 @@ interface Props {
 
 const ProviderCard = ({ href, image_url, companyName, type }: Props) => {;
 	return (
+		// @ts-ignore
 		<Link href={href} asChild>
 			<Pressable className="mb-8">
 				<View className="bg-white first-letter py-4 px-5 flex-row space-x-5 rounded-3xl shadow-2xl">

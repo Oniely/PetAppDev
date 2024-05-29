@@ -2,16 +2,19 @@ import axios from "axios";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Provider = () => {
 	const { id } = useLocalSearchParams();
 	const [provider, setProvider] = useState<any>({});
+	const [loading, setLoading] = useState(false);
 	const [time, setTime] = useState({
 		am: "",
 		pm: "",
 	});
 
 	useEffect(() => {
+		setLoading(true);
 		axios
 			.get(`service/provider/${id}`)
 			.then((res) => {
@@ -21,11 +24,13 @@ const Provider = () => {
 				});
 				setProvider(res.data);
 			})
-			.catch((err: any) => console.log(err.message));
+			.catch((err: any) => console.log(err.message))
+			.finally(() => setLoading(false));
 	}, []);
 
 	return (
 		<ScrollView className="flex-1 bg-off-white">
+			<Spinner visible={loading} />
 			<View className="flex-1 bg-main-orange">
 				<View className="h-[220px] items-center justify-center space-y-3 px-6">
 					<Image
@@ -106,7 +111,11 @@ const Provider = () => {
 							>
 								Available Days
 							</Text>
-							<Text>{provider?.operatingDays ? provider.operatingDays.join(" - ") : ""}</Text>
+							<Text>
+								{provider?.operatingDays
+									? provider.operatingDays.join(" - ")
+									: ""}
+							</Text>
 						</View>
 						<View className="space-y-1">
 							<Text
@@ -121,7 +130,7 @@ const Provider = () => {
 						</View>
 					</View>
 					<View className="w-full">
-						<Link href={`/services/service/${id}`} asChild>
+						<Link href={`/services/providerServices/${id}`} asChild>
 							<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
 								<Text
 									style={{

@@ -40,7 +40,7 @@ const ServicesLayout = () => {
 				options={{ headerShown: true, title: "Provider" }}
 			/>
 			<Stack.Screen
-				name="service/[id]"
+				name="providerServices/[id]"
 				options={{
 					headerShown: true,
 					title: "Services",

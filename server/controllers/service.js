@@ -41,7 +41,28 @@ const getProvider = async (req, res) => {
 	}
 };
 
+const getServices = async (req, res) => {
+	try {
+		const { id } = req.params;
+		console.log(`getServices: ${id}`);
+
+		const services = await Service.find({ provider: id });
+
+		if (!services) {
+			res.status(StatusCodes.NOT_FOUND).json({
+				message: "Services Not Found",
+			});
+		}
+		res.status(StatusCodes.OK).json(services);
+	} catch (error) {
+		throw new Error(
+			`Something went wrong while fetching for services: ${error.message}`
+		);
+	}
+};
+
 module.exports = {
 	fetchProviders,
 	getProvider,
+	getServices,
 };
