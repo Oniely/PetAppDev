@@ -41,16 +41,16 @@ const getProvider = async (req, res) => {
 	}
 };
 
-const getServices = async (req, res) => {
+const fetchServices = async (req, res) => {
 	try {
 		const { id } = req.params;
-		console.log(`getServices: ${id}`);
+		console.log(`fetchServices: ${id}`);
 
 		const services = await Service.find({ provider: id });
 
 		if (!services) {
-			res.status(StatusCodes.NOT_FOUND).json({
-				message: "Services Not Found",
+			res.status(StatusCodes.BAD_REQUEST).json({
+				message: "Services not available or does not exist. Please recheck."
 			});
 		}
 		res.status(StatusCodes.OK).json(services);
@@ -61,8 +61,29 @@ const getServices = async (req, res) => {
 	}
 };
 
+const getService = async (req, res) => {
+	try {
+		const { id } = req.params;
+		console.log(`getService: ${id}`);
+
+		const service = await Service.findById(id);
+
+		if (!service) {
+			res.status(StatusCodes.NOT_FOUND).json({
+				message: "Service is not available or does not exist. Please recheck."
+			})
+		}
+		res.status(StatusCodes.OK).json(service);
+	} catch (error) {
+		throw new Error(
+			`Something went wrong while fetching for service: ${error.message}`
+		);
+	}
+};
+
 module.exports = {
 	fetchProviders,
 	getProvider,
-	getServices,
+	fetchServices,
+	getService
 };

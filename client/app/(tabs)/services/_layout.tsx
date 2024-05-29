@@ -66,6 +66,10 @@ const ServicesLayout = () => {
 					},
 				}}
 			/>
+			<Stack.Screen
+				name="service/[id]"
+				options={{ headerShown: true, title: "Service" }}
+			/>
 		</Stack>
 	);
 };

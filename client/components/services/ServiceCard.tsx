@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
 	image_url: string;
@@ -8,11 +8,16 @@ interface Props {
 	href: string;
 }
 
-const ServiceCard = ({ image_url, serviceName, typeOfService, href }: Props) => {
+const ServiceCard = ({
+	image_url,
+	serviceName,
+	typeOfService,
+	href,
+}: Props) => {
 	return (
 		// @ts-ignore
 		<Link href={href} asChild>
-			<View className="bg-white w-[47%] h-48 shadow-md rounded-lg shrink-0 px-3 py-2 mt-2">
+			<TouchableOpacity className="bg-white w-[47%] h-48 shadow-md rounded-lg shrink-0 px-3 py-2 mt-2">
 				<Image
 					source={{
 						uri: image_url,
@@ -33,7 +38,7 @@ const ServiceCard = ({ image_url, serviceName, typeOfService, href }: Props) => 
 						{typeOfService}
 					</Text>
 				</View>
-			</View>
+			</TouchableOpacity>
 		</Link>
 	);
 };

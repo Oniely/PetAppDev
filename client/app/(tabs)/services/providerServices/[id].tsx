@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { View, Text, ScrollView, Image } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 
-const Service = () => {
+const ProviderServices = () => {
 	const { id } = useLocalSearchParams();
 	const [provider, setProvider] = useState<any>({});
 	const [services, setServices] = useState<any>([]);
@@ -15,14 +15,14 @@ const Service = () => {
 	useEffect(() => {
 		setLoading(true);
 		axios
-			.get(`service/provider/${id}`)
+		.get(`/service/provider/${id}`)
 			.then((res) => {
 				setProvider(res.data);
 			})
 			.catch((err) => console.log(err));
 
 		axios
-			.get(`/service/services/${id}`)
+			.get(`/service/provider/services/${id}`)
 			.then((res) => {
 				setServices(res.data);
 			})
@@ -66,7 +66,7 @@ const Service = () => {
 									typeOfService={service.typeOfService
 										.split("_")
 										.join(" ")}
-									href={`/`}
+									href={`services/service/${service._id}`}
 								/>
 							))}
 					</View>
@@ -76,4 +76,4 @@ const Service = () => {
 	);
 };
 
-export default Service;
+export default ProviderServices;
