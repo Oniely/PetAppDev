@@ -81,10 +81,6 @@ const ServiceProviderSchema = new mongoose.Schema({
 	ratings: [{ rating: Number, comment: String }],
 });
 
-const Provider =
-	mongoose.models.Provider ||
-	mongoose.model("Provider", ServiceProviderSchema);
-
 const ServiceTypes = {
 	GROOMING: "GROOMING",
 	VETERINARY: "VETERINARY",
@@ -127,6 +123,10 @@ const ServiceSchema = new mongoose.Schema({
 	},
 	price: { type: Number, require: true },
 });
+
+const Provider =
+	mongoose.models.Provider ||
+	mongoose.model("Provider", ServiceProviderSchema);
 
 const Service =
 	mongoose.models.Service || mongoose.model("Service", ServiceSchema);

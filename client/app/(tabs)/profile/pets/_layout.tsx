@@ -1,9 +1,9 @@
 import Colors from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
-import { router, Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
 
-const ProfileLayout = () => {
+const PetsLayout = () => {
 	return (
 		<Stack
 			screenOptions={{
@@ -34,17 +34,10 @@ const ProfileLayout = () => {
 				animationTypeForReplace: "pop",
 			}}
 		>
-			<Stack.Screen name="index" options={{ title: "Your Profile" }} />
-			<Stack.Screen
-				name="edit_profile"
-				options={{ title: "Edit Profile" }}
-			/>
-			<Stack.Screen
-				name="pets"
-				options={{ title: "Pets", headerShown: false }}
-			/>
+			<Stack.Screen name="index" options={{ title: "Your Pets" }} />
+			<Stack.Screen name="add_pet" options={{ title: "Add Pet" }} />
 		</Stack>
 	);
 };
 
-export default ProfileLayout;
+export default PetsLayout;

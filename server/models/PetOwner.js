@@ -24,7 +24,7 @@ const PetSchema = new Schema({
 		required: true,
 	},
 	breed: String,
-	age: String,
+	age: Number,
 	owner: {
 		type: Schema.Types.ObjectId,
 		ref: "PetOwner",

@@ -22,7 +22,7 @@ const ProfileMenu = () => {
 				}
 			/>
 			<ProfileMenuItem
-				link="/home"
+				link="/profile/pets"
 				title="Your Pets"
 				icon={<MaterialIcons name="catching-pokemon" size={20} color={Colors["dark-gray"]} />}
 			/>
