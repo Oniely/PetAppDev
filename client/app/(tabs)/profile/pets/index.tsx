@@ -14,7 +14,7 @@ const Pets = () => {
 
 	useEffect(() => {
 		setLoading(true);
-
+		
 		axios
 			.get("/pet/all", { params: { userId } })
 			.then((res) => {
@@ -34,7 +34,7 @@ const Pets = () => {
 							key={pet._id}
 							name={pet.petName}
 							species={pet.species}
-							href={pet._id}
+							href={`/profile/pets/${pet._id}`}
 						/>
 					))}
 

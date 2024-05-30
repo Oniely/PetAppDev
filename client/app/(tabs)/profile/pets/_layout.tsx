@@ -36,6 +36,8 @@ const PetsLayout = () => {
 		>
 			<Stack.Screen name="index" options={{ title: "Your Pets" }} />
 			<Stack.Screen name="add_pet" options={{ title: "Add Pet" }} />
+			<Stack.Screen name="[id]" options={{ title: "Your Pet" }} />
+			<Stack.Screen name="edit/[id]" options={{ title: "Update Pet" }} />
 		</Stack>
 	);
 };

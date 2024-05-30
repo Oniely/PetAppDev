@@ -28,8 +28,8 @@ const AddPet = async (req, res) => {
 		if (!updatedPetOwner) {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
-				message: 'Pet owner not found or update has failed'
-			});	
+				message: "Pet owner not found or update has failed",
+			});
 		}
 
 		res.status(StatusCodes.CREATED).json({
@@ -46,7 +46,7 @@ const fetchPets = async (req, res) => {
 	try {
 		const { userId } = req.query;
 
-		console.log('fetching pets: ', userId);
+		console.log("fetching pets: ", userId);
 
 		const owner = await PetOwner.findOne({ userId });
 
@@ -55,8 +55,8 @@ const fetchPets = async (req, res) => {
 		if (!pets) {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
-				message: 'Pet owner not found or update has failed'
-			});	
+				message: "Pet owner not found or update has failed",
+			});
 		}
 
 		res.status(StatusCodes.OK).json(pets);
@@ -67,7 +67,82 @@ const fetchPets = async (req, res) => {
 	}
 };
 
+const getPet = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		console.log("get pet: ", id);
+
+		const pets = await Pet.findById(id);
+
+		if (!pets) {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: "Pet owner not found or update has failed",
+			});
+		}
+
+		res.status(StatusCodes.OK).json(pets);
+	} catch (error) {
+		throw new Error(
+			`Something went wrong while trying to fetch pets: ${error.message}`
+		);
+	}
+};
+
+const updatePet = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { name, breed, species, age } = req.body;
+
+		console.log(`update pet: ${id}`);
+
+		const pet = await Pet.findOneAndUpdate(
+			{ _id: id },
+			{ petName: name, breed, species, age },
+			{ new: true }
+		);
+
+		if (!pet) {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+			});
+		}
+
+		res.status(StatusCodes.OK).json({
+			success: true,
+		});
+	} catch (error) {
+		d
+	}
+};
+
+const removePet = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const pet = await Pet.findOneAndDelete({ _id: id });
+
+		if (!pet) {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+			});
+		}
+
+		res.status(StatusCodes.OK).json({
+			success: true,
+		});
+	} catch (error) {
+		throw new Error(
+			`Something went wrong while trying to remove pet: ${error.message}`
+		);	
+	}
+}
+
 module.exports = {
 	AddPet,
-	fetchPets
+	fetchPets,
+	getPet,
+	updatePet,
+	removePet
 };

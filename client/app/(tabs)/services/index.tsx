@@ -3,7 +3,7 @@ import ProviderCard from "@/components/services/ProviderCard";
 import Colors from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -11,6 +11,7 @@ import {
 	Image,
 	TextInput,
 	TouchableOpacity,
+	RefreshControl,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,6 +28,15 @@ const Services = () => {
 	const [services, setServices] = useState<ServiceType>([]);
 	const [loading, setLoading] = useState(false);
 
+	const [refreshing, setRefreshing] = useState(false);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 1500);
+	}, []);
+
 	useEffect(() => {
 		setLoading(true);
 
@@ -42,7 +52,15 @@ const Services = () => {
 	return (
 		<SafeAreaView className="flex-1">
 			<Spinner visible={loading} />
-			<ScrollView className="flex-1 bg-off-white px-4 pt-6">
+			<ScrollView
+				className="flex-1 bg-off-white px-4 pt-6"
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+					/>
+				}
+			>
 				<View className="flex-row items-center justify-between bg-main-orange px-5 py-3 rounded-2xl mb-6">
 					<View>
 						<Text

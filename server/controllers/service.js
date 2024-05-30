@@ -4,7 +4,9 @@ const { Provider, Service } = require("../models/ServiceProvider");
 const fetchProviders = async (req, res) => {
 	try {
 		console.log(`fetchProviders`);
-		const providers = await Provider.find({});
+		const providers = await Provider.find({
+			servicesOffered: { $ne: null, $ne: [] },
+		});
 
 		res.status(StatusCodes.OK).json(providers);
 	} catch (error) {
@@ -50,7 +52,8 @@ const fetchServices = async (req, res) => {
 
 		if (!services) {
 			res.status(StatusCodes.BAD_REQUEST).json({
-				message: "Services not available or does not exist. Please recheck."
+				message:
+					"Services not available or does not exist. Please recheck.",
 			});
 		}
 		res.status(StatusCodes.OK).json(services);
@@ -70,8 +73,9 @@ const getService = async (req, res) => {
 
 		if (!service) {
 			res.status(StatusCodes.NOT_FOUND).json({
-				message: "Service is not available or does not exist. Please recheck."
-			})
+				message:
+					"Service is not available or does not exist. Please recheck.",
+			});
 		}
 		res.status(StatusCodes.OK).json(service);
 	} catch (error) {
@@ -85,5 +89,5 @@ module.exports = {
 	fetchProviders,
 	getProvider,
 	fetchServices,
-	getService
+	getService,
 };
