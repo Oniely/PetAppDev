@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const setAppointment = async (req, res) => {
 	try {
-		const { pet, owner, service, date, time } = req.body;
+		const { pet, owner, service, provider,  date, time } = req.body;
 
 		console.log(req.body);
 
@@ -11,6 +11,7 @@ const setAppointment = async (req, res) => {
 			pet,
 			petOwner: owner,
 			service,
+			provider,
 			date,
 			time,
 		});

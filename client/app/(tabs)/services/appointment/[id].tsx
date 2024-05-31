@@ -17,6 +17,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 const Appointment = () => {
 	const { id } = useLocalSearchParams();
+	const [providerId, setProviderId] = useState("");
 	const [appointmentDate, setAppointmentDate] = useState("");
 	const [appointmentTime, setAppointmentTime] = useState("");
 
@@ -36,9 +37,12 @@ const Appointment = () => {
 
 		axios
 			.get("/pet/all", { params: { userId } })
-			.then((res) => {
-				setPets(res.data);
-			})
+			.then((res) => setPets(res.data))
+			.catch((err) => console.log(err));
+
+		axios
+			.get(`/service/${id}`)
+			.then((res) => setProviderId(res.data.provider))
 			.catch((err) => console.log(err))
 			.finally(() => setLoading(false));
 	}, []);
@@ -67,7 +71,7 @@ const Appointment = () => {
 		const time = rawTime.split(" ")[0];
 
 		return time;
-	}
+	};
 
 	const onChange = ({ type }: any, selectedDate: any) => {
 		if (type == "set") {
@@ -105,12 +109,13 @@ const Appointment = () => {
 				pet: selectedPet,
 				owner: pets[0].owner,
 				service: id,
+				provider: providerId,
 				date: appointmentDate,
 				time: appointmentTime,
 			})
 			.then((res) => {
 				if (res.data.success) {
-					router.replace('/services/appointment/waiting');
+					router.replace("/services/appointment/waiting");
 				} else {
 					router.back();
 				}
