@@ -87,7 +87,7 @@ const Service = () => {
 						</View>
 					</View>
 					<View className="w-full">
-						<Link href={`/services/providerServices/${id}`} asChild>
+						<Link href={`/services/appointment/${id}`} asChild>
 							<TouchableOpacity className="py-3 px-3 bg-main-orange rounded-lg">
 								<Text
 									style={{

@@ -113,7 +113,7 @@ const updatePet = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		d
+		throw new Error(`Something went wrong while updating pet info: ${error.message}`);
 	}
 };
 

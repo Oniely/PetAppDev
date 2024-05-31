@@ -33,7 +33,7 @@ const AddPet = () => {
 			.post("/pet/add", { name, species, breed, age: Number(age), userId })
 			.then((res) => {
                 if (res.data.success) {
-                    router.push('/(tabs)/profile/pets/');
+                    router.back();
                 }
             })
 			.catch((err) => console.log(err))

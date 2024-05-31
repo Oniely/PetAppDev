@@ -70,6 +70,18 @@ const ServicesLayout = () => {
 				name="service/[id]"
 				options={{ headerShown: true, title: "Service" }}
 			/>
+			<Stack.Screen
+				name="appointment/[id]"
+				options={{ headerShown: true, title: "Set Appointment" }}
+			/>
+			<Stack.Screen
+				name="appointment/waiting"
+				options={{
+					headerShown: true,
+					title: "Appointment Confirmation",
+					headerLeft: () => <></>,
+				}}
+			/>
 		</Stack>
 	);
 };

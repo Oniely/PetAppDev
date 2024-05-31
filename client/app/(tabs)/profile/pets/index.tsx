@@ -4,7 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 
 const Pets = () => {
