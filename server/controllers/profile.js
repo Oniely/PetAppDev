@@ -1,12 +1,27 @@
 const { PetOwner } = require("../models/PetOwner");
 const { StatusCodes } = require("http-status-codes");
 
+const getProfileInfo = async (req, res) => {
+	const { userId } = req.query;
+
+	try {
+		const petOwner = await PetOwner.findOne({ userId: userId });
+
+		res.status(StatusCodes.OK).json(petOwner);
+	} catch (error) {
+		res.status(StatusCodes.BAD_REQUEST).json({
+			message: "Something went wrong when updating user profile photo",
+		});
+	}
+}
+
 const updateUser = async (req, res) => {
-	const { userId, fname, lname, image_url } = req.body;
+	const { userId, fname, lname, phoneNumber, image_url } = req.body;
 
 	let updateObject = {
 		fname,
-		lname
+		lname,
+		phoneNumber
 	};
 
 	if (userId.startsWith("user_")) {
@@ -36,4 +51,5 @@ const updateUser = async (req, res) => {
 
 module.exports = {
 	updateUser,
+	getProfileInfo
 };

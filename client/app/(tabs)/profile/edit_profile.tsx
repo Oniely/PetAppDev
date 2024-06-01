@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -20,10 +20,21 @@ const EditProfile = () => {
 	const { user } = useUser();
 	const [firstName, setFirstName] = useState(user?.firstName);
 	const [lastName, setLastName] = useState(user?.lastName);
+	const [phoneNumber, setPhoneNumber] = useState("");
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [image, setImage] = useState("");
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		setLoading(true);
+
+		axios
+			.get("/profile", { params: { userId: user?.id } })
+			.then((res) => setPhoneNumber(res.data.phoneNumber || ""))
+			.catch((err) => console.log(err))
+			.finally(() => setLoading(false));
+	}, []);
 
 	const onUpdatePress = async () => {
 		setLoading(true);
@@ -54,6 +65,7 @@ const EditProfile = () => {
 				userId: user?.id,
 				fname: firstName,
 				lname: lastName,
+				phoneNumber: phoneNumber,
 				image_url: image,
 			});
 			if (data.message) {
@@ -121,6 +133,15 @@ const EditProfile = () => {
 							className="px-3 py-3 border rounded-xl"
 							value={lastName!}
 							onChangeText={(text) => setLastName(text)}
+						/>
+					</View>
+					<View className="gap-1">
+						<Text>Contact Number</Text>
+						<TextInput
+							placeholder="Your Contact Number"
+							className="px-3 py-3 border rounded-xl"
+							value={phoneNumber!}
+							onChangeText={(text) => setPhoneNumber(text)}
 						/>
 					</View>
 					<View className="gap-1">
