@@ -54,11 +54,15 @@ const EditProfile = () => {
 				});
 			}
 
+			let image_url = "";
+
 			if (image) {
 				const res = await manipulateAsync(image, [], { base64: true });
-				await user?.setProfileImage({
+				const img = await user?.setProfileImage({
 					file: `data:image/png;base64,${res.base64}`,
 				});
+
+				image_url = img?.publicUrl!;
 			}
 
 			const { data } = await axios.post("/profile/update_user", {
@@ -66,7 +70,7 @@ const EditProfile = () => {
 				fname: firstName,
 				lname: lastName,
 				phoneNumber: phoneNumber,
-				image_url: image,
+				image_url: image_url,
 			});
 			if (data.message) {
 				alert(data.message);

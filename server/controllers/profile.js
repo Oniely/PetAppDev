@@ -18,6 +18,8 @@ const getProfileInfo = async (req, res) => {
 const updateUser = async (req, res) => {
 	const { userId, fname, lname, phoneNumber, image_url } = req.body;
 
+	console.log("Updating user profile: ", userId);
+
 	let updateObject = {
 		fname,
 		lname,

@@ -94,6 +94,7 @@ export default function TabLayout() {
 						tabBarIcon: ({ color }) => (
 							<Feather name="bell" size={24} color={color} />
 						),
+						headerShown: true
 					}}
 					redirect={!isSignedIn}
 				/>

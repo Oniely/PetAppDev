@@ -6,8 +6,6 @@ const setAppointment = async (req, res) => {
 	try {
 		const { pet, owner, service, provider,  date, time } = req.body;
 
-		console.log(req.body);
-
 		const appointment = new Appointment({
 			pet,
 			petOwner: owner,
@@ -28,7 +26,8 @@ const setAppointment = async (req, res) => {
 			recipientModel: "Provider",
 			appointment: apt._id,
 			status: apt.status,
-			message: `${apt.petOwner.fname} has requested an appointment for your service`
+			providerMessage: `${apt.petOwner.fname} has requested an appointment for your service`,
+			ownerMessage: `Appointment has been sent! Please wait for confirmation.`
 		})
 
 		if (!newAppointment && !notification) {

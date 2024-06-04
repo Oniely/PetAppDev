@@ -22,6 +22,7 @@ app.use("/service", require("./routes/service"));
 app.use("/profile", require("./routes/profile"));
 app.use("/pet", require("./routes/pet"));
 app.use("/appointment", require("./routes/appointment"));
+app.use("/notification", require("./routes/notification"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, async () => {
