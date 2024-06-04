@@ -27,7 +27,7 @@ import axios from "axios";
 SplashScreen.preventAutoHideAsync();
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-axios.defaults.baseURL = "http://192.168.1.13:4000";
+axios.defaults.baseURL = "http://192.168.1.5:4000";
 
 const InitialLayout = () => {
 	const { isLoaded, isSignedIn, userId } = useAuth();
