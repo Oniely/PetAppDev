@@ -57,14 +57,14 @@ const Notifications = () => {
 				}
 			> 
 				{notifs.length > 0 &&
-					notifs.map((notif: any) => {
+					notifs.map((notif: any, idx: any) => {
             		const { formattedDate, formattedTime } = formatDateAndTime(notif?.updatedAt);
 
 						return (
 							<NotificationCard
-								key={notif?._id}
-								image_url={notif?.appointment.provider.image_url}
-								name={notif?.appointment.provider.companyName}
+								key={idx}
+								image_url={notif?.appointment.provider?.image_url}
+								name={notif?.appointment.provider?.companyName}
 								message={notif?.ownerMessage}
 								status={notif.status}
 								date={`${formattedDate}`}
@@ -72,7 +72,7 @@ const Notifications = () => {
 								serviceName={
 									notif?.appointment.service?.serviceName
 								}
-								href={`/services/provider/${notif?.appointment.provider._id}`}
+								href={`/services/provider/${notif?.appointment.provider?._id}`}
 							/>
 						);
 					})}

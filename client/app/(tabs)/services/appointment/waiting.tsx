@@ -8,7 +8,7 @@ const Waiting = () => {
 				Appointment has been set please wait for the provider to confirm
 				your schedule.
 			</Text>
-			<Link style={{ fontFamily: "Poppins_400Regular" }} href="/(tabs)/notifications" className="underline mb-1 uppercase">
+			<Link style={{ fontFamily: "Poppins_400Regular" }} href="/(tabs)/home/" className="underline mb-1 uppercase"> 
 				Go to home
 			</Link>
 		</View>

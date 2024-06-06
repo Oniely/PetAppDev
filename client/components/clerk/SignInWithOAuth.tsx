@@ -3,7 +3,6 @@ import * as WebBrowser from "expo-web-browser";
 import { Image, Text, TouchableOpacity } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-import { router } from "expo-router";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,7 +20,8 @@ const SignInWithOAuth = () => {
 
 			if (createdSessionId) {
 				setActive!({ session: createdSessionId });
-				router.replace('/home/');
+			} else {
+				// ---
 			}
 		} catch (err) {
 			console.error("OAuth error", err);

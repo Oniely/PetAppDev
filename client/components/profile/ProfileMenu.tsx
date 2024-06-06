@@ -26,11 +26,11 @@ const ProfileMenu = () => {
 				title="Your Pets"
 				icon={<MaterialIcons name="catching-pokemon" size={20} color={Colors["dark-gray"]} />}
 			/>
-			{/* <ProfileMenuItem
+			<ProfileMenuItem
 				link="/home"
 				title="Appointment History"
 				icon={<Feather name="clock" size={20} color={Colors["dark-gray"]} />}
-			/> */}
+			/>
 
 			{/* LOGOUT  */}
 			<TouchableOpacity
