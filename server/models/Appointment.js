@@ -18,6 +18,11 @@ const AppointmentSchema = new mongoose.Schema({
 		required: true,
 		default: "Pending",
 	},
+	price: {
+		type: Number,
+		required: true,
+		default: 0
+	}
 });
 
 const Appointment = mongoose.model("Appointment", AppointmentSchema);

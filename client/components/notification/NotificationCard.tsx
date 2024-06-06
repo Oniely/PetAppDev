@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import { LinkProps } from "expo-router/build/link/Link";
 import { Image, Pressable, Text, View } from "react-native";
 
 interface Props {
