@@ -23,7 +23,7 @@ const NotificationCard = ({
 	href,
 }: Props) => {
 	return (
-		<View className="py-2 flex flex-row items-start justify-start space-x-3 mb-4">
+		<View className="py-2 flex flex-row items-start justify-start space-x-3 mb-4 border-t border-t-neutral-200 pt-6">
 			<View className="items-start justify-start">
 				{/* @ts-ignore */}
 				<Link href={href} asChild>

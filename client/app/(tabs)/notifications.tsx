@@ -58,7 +58,7 @@ const Notifications = () => {
 			> 
 				{notifs.length > 0 &&
 					notifs.map((notif: any) => {
-            const { formattedDate, formattedTime } = formatDateAndTime(notif?.updatedAt);
+            		const { formattedDate, formattedTime } = formatDateAndTime(notif?.updatedAt);
 
 						return (
 							<NotificationCard
@@ -70,7 +70,7 @@ const Notifications = () => {
 								date={`${formattedDate}`}
 								time={`${formattedTime}`}
 								serviceName={
-									notif?.appointment.service.serviceName
+									notif?.appointment.service?.serviceName
 								}
 								href={`/services/provider/${notif?.appointment.provider._id}`}
 							/>

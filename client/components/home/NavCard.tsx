@@ -11,7 +11,7 @@ interface Props {
 	title: string;
 	cardTitle: string;
 	gotoLink: any;
-	imageUrl: ImageSourcePropType;
+	imageUrl: string;
 }
 
 const NavCard = ({ title, cardTitle, gotoLink, imageUrl }: Props) => {
@@ -46,7 +46,7 @@ const NavCard = ({ title, cardTitle, gotoLink, imageUrl }: Props) => {
 				</View>
 				<View>
 					<Image
-						source={imageUrl}
+						source={{ uri: imageUrl }}
 						alt="Card Photo"
 						className="object-cover w-28 h-full rounded-xl"
 					/>

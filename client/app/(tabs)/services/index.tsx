@@ -78,7 +78,7 @@ const Services = () => {
 					</View>
 					<View>
 						<Image
-							source={require("@/assets/images/dogo_care.jpg")}
+							source={{ uri: "https://media.istockphoto.com/id/1303362255/photo/young-happy-veterinary-nurse-smiling-while-playing-with-a-dog-high-quality-photo.jpg?s=612x612&w=0&k=20&c=_kIKIzB4GF5WDLCf2yK1XMQk9JtxoL9XPK_nJmTZ5JQ=" }}
 							className="w-[95px] h-[95px] rounded-lg"
 						/>
 					</View>

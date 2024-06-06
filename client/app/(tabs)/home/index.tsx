@@ -48,13 +48,13 @@ const Home = () => {
 					<NavCard
 						title="Services"
 						cardTitle="Discover essential services for your furry friend!"
-						imageUrl={require("@/assets/images/dogo_care.jpg")}
+						imageUrl="https://www.nyvetclinic.com/wp-content/uploads/2018/08/%D8%AE%D8%AF%D9%85%D8%A7%D8%AA-%D8%AA%D8%AC%D9%85%D9%8A%D9%84-%D9%88%D8%B1%D8%B9%D8%A7%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D9%8A%D9%88%D8%A7%D9%86-%D8%A7%D9%84%D8%A3%D9%84%D9%8A%D9%81-772x515.jpg"
 						gotoLink="../services"
 					/>
 					<NavCard
 						title="Community"
 						cardTitle="Connect and share with communities!"
-						imageUrl={require("@/assets/images/dogo_care.jpg")}
+						imageUrl="https://ontopoftheworldcommunities.com/wp-content/uploads/2020/07/on-top-of-the-world-dog-parks.jpg"
 						gotoLink="../moments"
 					/>
 				</View>
